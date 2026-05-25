@@ -12,87 +12,201 @@
 
   <style>
 
-.book-detail-modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+/* --- STYLING MODAL DETAIL BUKU --- */
+.book-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 5, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
-.book-detail-modal.active{
-  display:flex;
+.book-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.book-detail-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
+.book-modal-content {
+  background: var(--bg-panel);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 850px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.15);
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
 }
 
-.book-detail-content{
-  position:relative;
-  width:min(1100px,92%);
-  max-height:90vh;
-  overflow:auto;
-  background:#0c1228;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:28px;
-  padding:40px;
-  z-index:2;
+.book-modal-overlay.open .book-modal-content {
+  transform: scale(1);
 }
 
-.book-detail-grid{
-  display:grid;
-  grid-template-columns:320px 1fr;
-  gap:40px;
+.book-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
 
-.book-left img{
-  width:100%;
-  border-radius:20px;
+.book-modal-close:hover {
+  background: #ef4444;
+  color: #fff;
 }
 
-.book-author{
-  color:var(--primary-light);
-  margin-bottom:20px;
+.book-modal-body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  padding: 35px;
 }
 
-.book-desc{
-  color:var(--text-muted);
-  line-height:1.9;
-  margin-bottom:32px;
+.book-modal-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.metadata-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:20px;
+.book-modal-left img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.metadata-grid span{
-  color:#9ca3af;
-  font-size:13px;
+.book-modal-right h2 {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 
-.metadata-grid p{
-  margin-top:8px;
-  font-weight:600;
+.modal-author {
+  color: var(--primary-light);
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
-.close-book-modal{
-  position:absolute;
-  top:20px;
-  right:20px;
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:none;
-  cursor:pointer;
+.modal-badge-container {
+  margin-bottom: 20px;
 }
-	  
+
+.modal-badge {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 20px;
+}
+
+.metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.modal-synopsis h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.modal-synopsis p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.modal-actions {
+  margin-top: 25px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 20px;
+}
+
+.btn-borrow-modal {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-borrow-modal:hover {
+  background: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsivitas Layar HP */
+@media (max-width: 768px) {
+  .book-modal-body {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .book-modal-left {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+  .metadata-grid {
+    grid-template-columns: 1fr;
+  }
+}	  
     :root {
       --bg-dark: #050816;
       --bg-panel: rgba(7, 11, 31, 0.95);
@@ -899,19 +1013,28 @@
           <a class="section-link" onclick="switchPage('koleksi')">Lihat Semua <i class="fa-solid fa-arrow-right-long" style="margin-left:5px"></i></a>
         </div>
         <div class="books-scroll-container">
-          <article class="book-card">
-            <div class="book-cover-wrapper">
-              <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" alt="Cosmos">
-              <div class="book-action-overlay">
-                <button class="action-btn" title="Baca"><i class="fa-solid fa-book-open"></i></button>
-                <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
-              </div>
-            </div>
-            <div class="book-info">
-              <div class="book-meta"><span class="book-tag">Sains</span><div class="book-rating"></div></div>
-              <h3>Cosmos: A Personal Voyage</h3><p>Carl Sagan</p>
-            </div>
-          </article>
+          <article class="book-card"
+         data-isbn="978-0345331359"
+         data-penerbit="Random House"
+         data-tahun="1980"
+         data-ddc="520 / Ast"
+         data-bahasa="English"
+         data-fisik="365 hlm; 24 cm"
+         data-sinopsis="Buku ini mengeksplorasi 15 miliar tahun evolusi kosmik dan perkembangan sains serta peradaban manusia. Sagan menelusuri asal-usul pengetahuan dari perpustakaan kuno Alexandria hingga misi luar angkasa modern.">
+         
+  <div class="book-cover-wrapper">
+    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" alt="Cosmos">
+    <div class="book-action-overlay">
+      <button class="action-btn" title="Baca"><i class="fa-solid fa-book-open"></i></button>
+      <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
+    </div>
+  </div>
+  <div class="book-info">
+    <div class="book-meta"><span class="book-tag">Sains</span><div class="book-rating"></div></div>
+    <h3>Cosmos: A Personal Voyage</h3>
+    <p>Carl Sagan</p>
+  </div>
+</article>
           <article class="book-card">
             <div class="book-cover-wrapper">
               <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop" alt="Buku">
@@ -1710,6 +1833,90 @@
 </footer>
 
 <script>
+
+// --- LOGIKA MODAL DETAIL BUKU (OPAC METADATA) ---
+
+// Fungsi membuka modal dan mengambil data
+function openBookModal(cardElement) {
+  const modal = document.getElementById('bookDetailModal');
+  
+  // Mengambil data teks dasar dari card
+  const title = cardElement.querySelector('.book-title').innerText;
+  const author = cardElement.querySelector('.book-author').innerText;
+  const coverSrc = cardElement.querySelector('img').getAttribute('src');
+  
+  // Mengambil data teks dasar dari card (Disesuaikan dengan HTML Anda)
+const title = cardElement.querySelector('.book-info h3').innerText;
+const author = cardElement.querySelector('.book-info p').innerText;
+const coverSrc = cardElement.querySelector('img').getAttribute('src');
+
+  // Injeksi data ke komponen di dalam Modal
+  document.getElementById('modalBookTitle').innerText = title;
+  document.getElementById('modalBookAuthor').innerText = 'Oleh: ' + author;
+  document.getElementById('modalBookCover').setAttribute('src', coverSrc);
+  document.getElementById('modalBookCategory').innerText = category;
+  
+  document.getElementById('modalBookISBN').innerText = isbn;
+  document.getElementById('modalBookPublisher').innerText = publisher;
+  document.getElementById('modalBookYear').innerText = year;
+  document.getElementById('modalBookDDC').innerText = ddc;
+  document.getElementById('modalBookLang').innerText = lang;
+  document.getElementById('modalBookPhysical').innerText = physical;
+  document.getElementById('modalBookSynopsis').innerText = synopsis;
+
+  // Sambungkan tombol pinjam di dalam modal dengan fungsi peminjaman bawaan Anda
+  const borrowBtnModal = document.getElementById('modalActionBorrow');
+  borrowBtnModal.onclick = function() {
+    // Meniru trigger klik pada tombol .btn-baca asli di dalam card
+    const originalBorrowBtn = cardElement.querySelector('.btn-baca');
+    if (originalBorrowBtn) {
+      originalBorrowBtn.click();
+    }
+    closeBookModal();
+  };
+
+  // Tampilkan Modal
+  modal.classList.add('open');
+}
+
+// Fungsi menutup modal
+function closeBookModal() {
+  const modal = document.getElementById('bookDetailModal');
+  modal.classList.remove('open');
+}
+
+// Daftarkan Event Listener Klik pada setiap .book-card setelah DOM siap
+document.addEventListener("DOMContentLoaded", function() {
+  const collectionSection = document.getElementById('page-koleksi') || document.body;
+  
+  collectionSection.addEventListener('click', function(e) {
+    // Cari elemen terdekat yang memiliki class .book-card
+    const card = e.target.closest('.book-card');
+    
+    if (card) {
+      // Jika yang di-klik adalah tombol pinjam/baca bawaan, jangan buka modal detail
+      if (e.target.classList.contains('btn-baca') || e.target.closest('.btn-baca')) {
+        return; 
+      }
+      // Jika menekan tombol ikon favorit/hati bawaan, jangan buka modal juga
+      if (e.target.closest('.book-actions') || e.target.closest('.fav-btn')) {
+        return;
+      }
+      
+      // Jalankan fungsi modal jika area card selain tombol yang diklik
+      openBookModal(card);
+    }
+  });
+
+  // Menutup modal jika pengguna mengklik area luar kotak modal (overlay)
+  const modalOverlay = document.getElementById('bookDetailModal');
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) {
+      closeBookModal();
+    }
+  });
+});
+	
   // ==========================================
   // ROUTING SYSTEM
   // ==========================================
@@ -2519,82 +2726,57 @@ document
 	
 </script>
 
-	  <div class="book-detail-modal" id="bookDetailModal">
-  <div class="book-detail-backdrop"></div>
-
-  <div class="book-detail-content">
-    <button class="close-book-modal" id="closeBookModal">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-
-    <div class="book-detail-grid">
-
-      <div class="book-left">
-        <img
-          src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg"
-          alt="Filosofi Teras"
-        >
+<div id="bookDetailModal" class="book-modal-overlay">
+  <div class="book-modal-content">
+    <button class="book-modal-close" onclick="closeBookModal()"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div class="book-modal-body">
+      <div class="book-modal-left">
+        <img id="modalBookCover" src="" alt="Sampul Buku">
       </div>
-
-      <div class="book-right">
-        <h2>Filosofi Teras</h2>
-        <p class="book-author">Henry Manampiring</p>
-
-        <p class="book-desc">
-          Buku ini pada awalnya menceritakan tentang sebuah survei
-          kekhawatiran nasional yang semakin masif sekaligus menyajikan
-          tentang sekilas kehidupan si penulis yang dipenuhi oleh emosi
-          negatif yang berlebihan. Lalu, lebih dari 2000 tahun lalu sebuah
-          mazhab filsafat menemukan akar masalah dan solusi dari banyaknya
-          emosi negatif. Ya, Stoisisme atau filosofi Stoa, namun penulis
-          memperkenalkannya sebagai “Filosofi Teras”.
-        </p>
+      
+      <div class="book-modal-right">
+        <h2 id="modalBookTitle">Judul Buku</h2>
+        <p id="modalBookAuthor" class="modal-author">Oleh Penulis</p>
+        
+        <div class="modal-badge-container">
+          <span id="modalBookCategory" class="modal-badge">Kategori</span>
+        </div>
 
         <div class="metadata-grid">
-
-          <div>
-            <span>Categories</span>
-            <p>
-              Education Studies & Teaching –
-              Philosophy of Education
-            </p>
+          <div class="metadata-item">
+            <span class="meta-label">ISBN / ISSN</span>
+            <span id="modalBookISBN" class="meta-value">-</span>
           </div>
-
-          <div>
-            <span>Content Type</span>
-            <p>Books</p>
+          <div class="metadata-item">
+            <span class="meta-label">Penerbit</span>
+            <span id="modalBookPublisher" class="meta-value">-</span>
           </div>
-
-          <div>
-            <span>Year</span>
-            <p>2019</p>
+          <div class="metadata-item">
+            <span class="meta-label">Tahun Terbit</span>
+            <span id="modalBookYear" class="meta-value">-</span>
           </div>
-
-          <div>
-            <span>Publisher</span>
-            <p>Penerbit Buku Kompas</p>
+          <div class="metadata-item">
+            <span class="meta-label">Klasifikasi DDC</span>
+            <span id="modalBookDDC" class="meta-value">-</span>
           </div>
-
-          <div>
-            <span>Language</span>
-            <p>Indonesian</p>
+          <div class="metadata-item">
+            <span class="meta-label">Bahasa</span>
+            <span id="modalBookLang" class="meta-value">-</span>
           </div>
-
-          <div>
-            <span>Pages</span>
-            <p>320</p>
+          <div class="metadata-item">
+            <span class="meta-label">Deskripsi Fisik</span>
+            <span id="modalBookPhysical" class="meta-value">-</span>
           </div>
+        </div>
 
-          <div>
-            <span>ISBN</span>
-            <p>9766024125189</p>
-          </div>
+        <div class="modal-synopsis">
+          <h3>Sinopsis / Abstrak</h3>
+          <p id="modalBookSynopsis">Keterangan sinopsis atau ringkasan buku akan tampil di sini secara dinamis sesuai dengan buku yang dipilih oleh pemustaka.</p>
+        </div>
 
-          <div>
-            <span>File</span>
-            <p>PDF, 68.42 MB</p>
-          </div>
-
+        <div class="modal-actions">
+          <button id="modalActionBorrow" class="btn-borrow-modal"><i class="fa-solid fa-bookmark"></i> Pinjam Buku</button>
         </div>
       </div>
     </div>
