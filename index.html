@@ -2215,14 +2215,13 @@
   })();
 
   // ==========================================
-  // IDE 3: FITUR PEMINJAMAN BUKU & COUNTDOWN 7 HARI (ANTI-BENTROK)
+  // FITUR PEMINJAMAN BUKU & LIVE COUNTDOWN REAL-TIME
   // ==========================================
   (function() {
     window.addEventListener('load', function() {
       try {
         const KEY_PEMINJAMAN = 'lunarscientia_peminjaman';
 
-        // 1. Fungsi Database Lokal
         function dapatkanBukuPinjaman() {
           try { return JSON.parse(localStorage.getItem(KEY_PEMINJAMAN) || '[]'); }
           catch(e) { return []; }
@@ -2232,13 +2231,12 @@
           localStorage.setItem(KEY_PEMINJAMAN, JSON.stringify(data));
         }
 
-        // 2. Siapkan Tempat UI di Halaman "Riwayat" secara Otomatis
         const riwayatSection = document.getElementById('section-riwayat');
         if (!riwayatSection) return;
 
         let kontainerPinjam = document.getElementById('ui-peminjaman-aktif');
         
-        // Jika belum ada ui peminjaman, kita buat (Inject HTML)
+        // Buat UI container jika belum ada
         if (!kontainerPinjam) {
           const bungkus = document.createElement('div');
           bungkus.id = 'ui-peminjaman-aktif';
@@ -2246,12 +2244,11 @@
           bungkus.innerHTML = `
             <div style="margin-bottom:20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:15px;">
               <h2 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px;"><i class="fa-solid fa-stopwatch" style="color:var(--primary)"></i> Peminjaman Aktif</h2>
-              <p style="color: var(--text-muted); font-size:14px;">Buku yang sedang Anda pinjam. Batas baca maksimal 7 hari.</p>
+              <p style="color: var(--text-muted); font-size:14px;">Batas waktu pinjaman Anda berjalan secara real-time.</p>
             </div>
             <div id="grid-pinjaman" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;"></div>
           `;
           
-          // Sisipkan UI tepat sebelum elemen daftar riwayat (history-list)
           const targetSisip = riwayatSection.querySelector('.history-list');
           if (targetSisip) {
             riwayatSection.insertBefore(bungkus, targetSisip);
@@ -2260,13 +2257,12 @@
           }
         }
 
-        // 3. Fungsi Menampilkan Buku (Render UI)
+        // Fungsi mencetak elemen HTML dasar
         function renderPeminjaman() {
           const gridPinjaman = document.getElementById('grid-pinjaman');
           if (!gridPinjaman) return;
 
           const bukuDipinjam = dapatkanBukuPinjaman();
-          gridPinjaman.innerHTML = '';
 
           if (bukuDipinjam.length === 0) {
             gridPinjaman.innerHTML = `
@@ -2276,34 +2272,20 @@
             return;
           }
 
-          const waktuSekarang = new Date().getTime();
           let cetakHTML = '';
 
           bukuDipinjam.forEach(buku => {
-            const waktuTenggat = new Date(buku.tenggatWaktu).getTime();
-            const sisaWaktuMs = waktuTenggat - waktuSekarang;
-
-            let htmlStatus = '';
-            let gayaKartu = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;';
+            let gayaKartu = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center; transition: all 0.3s ease;';
             
-            // Logika Countdown
-            if (sisaWaktuMs <= 0) {
-              htmlStatus = `<span style="color: #ef4444; font-size: 12px; font-weight: 600;"><i class="fa-solid fa-circle-exclamation"></i> Jatuh Tempo</span>`;
-              gayaKartu = 'background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;';
-            } else {
-              const hari = Math.floor(sisaWaktuMs / (1000 * 60 * 60 * 24));
-              const jam = Math.floor((sisaWaktuMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-              htmlStatus = `<span style="color: #10b981; font-size: 12px; font-weight: 600;"><i class="fa-solid fa-hourglass-half"></i> Sisa: ${hari}hr ${jam}jm</span>`;
-            }
-
+            // Kita sediakan elemen <span> kosong dengan ID spesifik untuk disuntikkan jam digitalnya
             cetakHTML += `
-              <div style="${gayaKartu}">
+              <div id="card-${buku.id}" style="${gayaKartu}">
                 <img src="${buku.sampul}" alt="Cover" style="width: 50px; height: 75px; object-fit: cover; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
                 <div style="flex: 1; min-width: 0;">
                   <h4 style="font-size: 14px; color: #fff; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${buku.judul}</h4>
                   <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">${buku.penulis}</p>
                   <div style="display: flex; justify-content: space-between; align-items: center;">
-                    ${htmlStatus}
+                    <div id="timer-${buku.id}"></div>
                     <button class="btn-kembalikan" data-id="${buku.id}" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.3s;">Kembalikan</button>
                   </div>
                 </div>
@@ -2313,7 +2295,7 @@
 
           gridPinjaman.innerHTML = cetakHTML;
 
-          // Event Listener Tombol Kembalikan (Hover & Click)
+          // Event Listener untuk tombol kembalikan
           document.querySelectorAll('.btn-kembalikan').forEach(btn => {
             btn.addEventListener('mouseenter', e => e.target.style.background = 'rgba(239, 68, 68, 0.2)');
             btn.addEventListener('mouseleave', e => e.target.style.background = 'transparent');
@@ -2324,16 +2306,54 @@
               list = list.filter(b => b.id !== idBuku);
               simpanBukuPinjaman(list);
               showToast('Buku berhasil dikembalikan', 'success');
-              renderPeminjaman(); // Refresh UI instan
+              renderPeminjaman(); 
             });
+          });
+
+          // Panggil langsung fungsi detak jam agar tidak menunggu 1 detik di awal
+          updateTimers();
+        }
+
+        // Fungsi khusus yang di-refresh tiap 1 detik untuk teks jam digital
+        function updateTimers() {
+          const bukuDipinjam = dapatkanBukuPinjaman();
+          const waktuSekarang = new Date().getTime();
+
+          bukuDipinjam.forEach(buku => {
+            const kotakTimer = document.getElementById(`timer-${buku.id}`);
+            const kartuBuku = document.getElementById(`card-${buku.id}`);
+            if (!kotakTimer) return; // Abaikan jika elemennya belum ada di layar
+
+            const waktuTenggat = new Date(buku.tenggatWaktu).getTime();
+            const sisaWaktuMs = waktuTenggat - waktuSekarang;
+
+            if (sisaWaktuMs <= 0) {
+              kotakTimer.innerHTML = `<span style="color: #ef4444; font-size: 12px; font-weight: 600;"><i class="fa-solid fa-circle-exclamation"></i> Jatuh Tempo</span>`;
+              if (kartuBuku) {
+                kartuBuku.style.background = 'rgba(239, 68, 68, 0.05)';
+                kartuBuku.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+              }
+            } else {
+              // Kalkulasi waktu real-time
+              const hari = Math.floor(sisaWaktuMs / (1000 * 60 * 60 * 24));
+              const jam = Math.floor((sisaWaktuMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const menit = Math.floor((sisaWaktuMs % (1000 * 60 * 60)) / (1000 * 60));
+              const detik = Math.floor((sisaWaktuMs % (1000 * 60)) / 1000);
+              
+              // Sisipkan angka '0' di depan jika angkanya satuan (misal '9' menjadi '09')
+              const fJam = jam.toString().padStart(2, '0');
+              const fMenit = menit.toString().padStart(2, '0');
+              const fDetik = detik.toString().padStart(2, '0');
+
+              // Menggunakan font monospace agar lebar angka stabil saat berdetik
+              kotakTimer.innerHTML = `<span style="color: #10b981; font-size: 12px; font-weight: 600; font-family: 'Courier New', Courier, monospace; letter-spacing: 0.5px;"><i class="fa-solid fa-clock"></i> ${hari}hr ${fJam}:${fMenit}:${fDetik}</span>`;
+            }
           });
         }
 
-        // 4. Deteksi Saat Ikon "Buku Terbuka" (Baca) Diklik
+        // Tangkap event Pinjam Buku (Ikon Buku Terbuka)
         document.addEventListener('click', function(e) {
-          // Cari tombol yang mengandung ikon buku (fa-book-open) tapi bukan tombol favorit (secondary)
           const btnBaca = e.target.closest('.action-btn:not(.secondary)');
-          
           if (btnBaca && btnBaca.querySelector('.fa-book-open')) {
             const card = btnBaca.closest('.book-card');
             if (card) {
@@ -2347,11 +2367,10 @@
               
               const listPinjaman = dapatkanBukuPinjaman();
               
-              // Cek jika belum dipinjam
               if (!listPinjaman.find(b => b.judul === judul)) {
                 const idBuku = 'ID_' + Date.now();
                 
-                // Set tenggat waktu 7 hari ke depan
+                // Set simulasi waktu: 7 Hari dari waktu saat tombol diklik
                 const tglTenggat = new Date();
                 tglTenggat.setDate(tglTenggat.getDate() + 7);
 
@@ -2366,7 +2385,6 @@
                 simpanBukuPinjaman(listPinjaman);
                 renderPeminjaman();
                 
-                // Interupsi Toast Biasa Menjadi Toast Pinjam
                 setTimeout(() => { showToast(`Buku "${judul}" berhasil dipinjam (7 Hari)`); }, 50);
               } else {
                 setTimeout(() => { showToast(`Buku "${judul}" sudah ada di Peminjaman Aktif.`, 'error'); }, 50);
@@ -2375,14 +2393,14 @@
           }
         }, true);
 
-        // Jalankan render awal
+        // Render struktur utama di awal
         renderPeminjaman();
 
-        // 5. Update Timer Otomatis Setiap Menit
-        setInterval(renderPeminjaman, 60000);
+        // ⏱ JALANKAN JAM DIGITAL SETIAP 1 DETIK SECARA REAL-TIME ⏱
+        setInterval(updateTimers, 1000);
 
       } catch (err) {
-        console.error("Gagal menjalankan script Peminjaman:", err);
+        console.error("Gagal menjalankan script Peminjaman Real-Time:", err);
       }
     });
   })();
