@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lunarscientia - Perpustakaan Digital</title>
-
+	<link rel="icon" href="logo_lunarscientia.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -83,6 +83,16 @@
       background: linear-gradient(135deg, var(--primary-light), var(--primary));
       display: flex; justify-content: center; align-items: center;
       box-shadow: 0 0 30px var(--primary-glow); flex-shrink: 0;
+    }
+	  /* CSS BARU UNTUK GAMBAR LOGO */
+    .brand-logo-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%; /* Membuat logo bulat sempurna */
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.5); /* Efek glow ungu */
+      border: 2px solid var(--primary); /* Garis tepi ungu */
+      flex-shrink: 0;
     }
     .brand-icon i { font-size: 20px; color: #fff; }
     .brand-text h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; }
@@ -629,7 +639,7 @@
   <!-- ==================== SIDEBAR ==================== -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-icon"><i class="fa-solid fa-moon"></i></div>
+      <img src="logo_lunarscientia.png" alt="Logo Lunarscientia" class="brand-logo-img">
       <div class="brand-text">
         <h1>LUNARSCIENTIA</h1>
         <p>Digital Library</p>
@@ -885,9 +895,7 @@
 
         <div style="background: var(--bg-card); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; text-align: center;">
           <h3 style="margin-bottom: 10px; align-self: flex-start;"><i class="fa-solid fa-moon" style="color: var(--primary); margin-right: 10px;"></i>Filosofi Logo</h3>
-          <div style="font-size: 3rem; color: var(--primary); margin: 10px 0; text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);">
-            <i class="fa-solid fa-moon"></i>
-          </div>
+          <img src="logo_lunarscientia.png" alt="Logo Filosofi" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 15px 0; border: 2px solid var(--primary); box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);">
           <p style="color: #a0aec0; line-height: 1.6; font-size: 0.95rem; text-align: left;">
             Bentuk <strong>Bulan Sabit</strong> melambangkan cahaya di tengah pekatnya malam. Ini merepresentasikan <em>"Scientia"</em> (ilmu pengetahuan) yang menerangi ketidaktahuan, menjadi mercusuar literasi di dunia digital.
           </p>
@@ -1551,7 +1559,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-brand-row">
-        <div class="footer-brand-icon"><i class="fa-solid fa-moon"></i></div>
+        <img src="logo_lunarscientia.png" alt="Logo Footer" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
         <span class="footer-brand-name">LUNARSCIENTIA</span>
       </div>
       <p>Portal perpustakaan digital intergalaksi yang menginspirasi kreativitas dan kecintaan membaca bagi setiap pengguna di seluruh nusantara dan sekitarnya.</p>
