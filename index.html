@@ -623,56 +623,138 @@
     .custom-option { padding: 10px 18px; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: var(--transition); }
     .custom-option:hover { background: rgba(139,92,246,0.15); color: #fff; padding-left: 24px; }
     .custom-option.selected { background: rgba(139,92,246,0.1); color: var(--primary-light); font-weight: 600; border-left: 3px solid var(--primary-light); }
-  
-  /* ========================================
-   MODAL DETAIL BUKU
+
+   /* ========================================
+   BOOK DETAIL MODAL — OPAC STYLE
 ======================================== */
-.book-modal-overlay {
+.detail-modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(3, 5, 11, 0.85); backdrop-filter: blur(8px);
-  z-index: 9999; display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: var(--transition);
+  background: rgba(5, 8, 22, 0.88);
+  backdrop-filter: blur(16px);
+  z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  padding: 40px 20px;
+  opacity: 0; transition: opacity 0.35s ease;
 }
-.book-modal-overlay.open { opacity: 1; pointer-events: auto; }
-.book-modal-content {
-  background: var(--bg-panel); border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg); width: 90%; max-width: 850px;
-  max-height: 85vh; overflow-y: auto; position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(139,92,246,0.15);
-  transform: scale(0.95); transition: transform 0.3s ease;
+.detail-modal-overlay.active { display: flex; opacity: 1; }
+
+.detail-modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 1040px; max-height: 92vh;
+  overflow-y: auto; position: relative;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 50px rgba(139,92,246,0.12);
+  display: grid; grid-template-columns: 300px 1fr; gap: 0;
+  animation: fadeUp 0.4s ease forwards;
 }
-.book-modal-overlay.open .book-modal-content { transform: scale(1); }
-.book-modal-close {
-  position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05);
-  border: none; color: var(--text-muted); width: 36px; height: 36px;
-  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+.detail-modal::-webkit-scrollbar { width: 8px; }
+.detail-modal::-webkit-scrollbar-track { background: transparent; }
+.detail-modal::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.25); border-radius: 10px; }
+
+.detail-close {
+  position: absolute; top: 20px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
+  color: var(--text-muted); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition); z-index: 20; font-size: 18px;
 }
-.book-modal-close:hover { background: var(--danger); color: #fff; }
-.book-modal-body { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 35px; }
-.book-modal-left img { width: 100%; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); object-fit: cover; }
-.book-modal-right h2 { font-size: 28px; color: #fff; margin-bottom: 5px; font-weight: 700; }
-.modal-author { color: var(--primary-light); font-size: 16px; margin-bottom: 15px; }
-.modal-badge { background: rgba(139,92,246,0.15); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--border-color-light); display: inline-block; margin-bottom: 20px; }
-.metadata-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; }
-.metadata-item { display: flex; flex-direction: column; gap: 4px; }
-.meta-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-.meta-value { font-size: 15px; color: #e2e8f0; font-weight: 500; }
-.modal-synopsis h3 { font-size: 18px; color: #fff; margin-bottom: 8px; }
-.modal-synopsis p { font-size: 14px; color: var(--text-muted); line-height: 1.6; text-align: justify; }
-.modal-actions { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
-.btn-borrow-modal { background: var(--primary); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); }
-.btn-borrow-modal:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139,92,246,0.4); }
+.detail-close:hover { background: rgba(239,68,68,0.15); color: var(--danger); border-color: rgba(239,68,68,0.3); transform: rotate(90deg); }
+
+.detail-cover-wrap {
+  padding: 40px 32px; display: flex; flex-direction: column; gap: 20px;
+  border-right: 1px solid var(--border-color);
+  background: linear-gradient(180deg, rgba(139,92,246,0.06), transparent);
+}
+.detail-cover-img { width: 100%; border-radius: var(--radius-md); box-shadow: 0 20px 50px rgba(0,0,0,0.55); object-fit: cover; aspect-ratio: 2/3; }
+.detail-actions-vertical { display: flex; flex-direction: column; gap: 10px; }
+
+.detail-info-wrap { padding: 40px; display: flex; flex-direction: column; gap: 22px; }
+.detail-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+.detail-tag { padding: 5px 12px; border-radius: 6px; background: rgba(139,92,246,0.15); color: var(--primary-light); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; border: 1px solid rgba(139,92,246,0.2); }
+.detail-title { font-size: 30px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; background: linear-gradient(to right, #ffffff, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+.detail-author { font-size: 16px; color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.detail-author i { color: var(--primary-light); }
+
+.detail-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.detail-meta-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; transition: var(--transition); }
+.detail-meta-item:hover { background: var(--bg-card-hover); border-color: var(--border-color-light); transform: translateY(-3px); }
+.detail-meta-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; font-weight: 700; }
+.detail-meta-value { font-size: 14px; color: #fff; font-weight: 700; line-height: 1.3; }
+
+.detail-synopsis { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; }
+.detail-synopsis h4 { font-size: 13px; color: var(--primary-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.detail-synopsis p { color: var(--text-muted); font-size: 15px; line-height: 1.85; }
+
+.detail-rating-big { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.detail-rating-big i { color: #FBBF24; font-size: 18px; }
+.detail-rating-text { color: var(--text-muted); font-size: 14px; margin-left: 6px; }
+
+.detail-status-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; }
+.detail-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 99px; letter-spacing: 0.3px; }
+.detail-pill.ok { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: var(--success); }
+.detail-pill.call { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.35); color: var(--primary-light); }
 
 @media (max-width: 768px) {
-  .book-modal-body { grid-template-columns: 1fr; padding: 20px; }
-  .book-modal-left { max-width: 180px; margin: 0 auto; }
-  .metadata-grid { grid-template-columns: 1fr; }
+  .detail-modal { grid-template-columns: 1fr; max-height: 95vh; }
+  .detail-cover-wrap { border-right: none; border-bottom: 1px solid var(--border-color); padding: 28px 24px; }
+  .detail-info-wrap { padding: 28px 24px; }
+  .detail-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .detail-title { font-size: 24px; }
 }
-  
   </style>
 </head>
 
 <body>
+<!-- ==================== BOOK DETAIL MODAL (OPAC) ==================== -->
+<div class="detail-modal-overlay" id="bookDetailModal">
+  <div class="detail-modal" onclick="event.stopPropagation()">
+    <button class="detail-close" onclick="closeBookDetail()" title="Tutup"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div class="detail-cover-wrap">
+      <img src="" alt="Cover Buku" class="detail-cover-img" id="detailCover">
+      <div class="detail-actions-vertical">
+        <button class="btn btn-primary" style="width:100%; height:48px; font-size:14px;" onclick="pinjamDariDetail()">
+          <i class="fa-solid fa-book-open"></i> Pinjam / Baca
+        </button>
+        <button class="btn btn-outline" style="width:100%; height:48px; font-size:14px;" onclick="tambahFavDariDetail()">
+          <i class="fa-regular fa-heart"></i> Tambah Favorit
+        </button>
+      </div>
+    </div>
+    
+    <div class="detail-info-wrap">
+      <div>
+        <div class="detail-tags" id="detailTags"></div>
+        <h2 class="detail-title" id="detailTitle">Judul Buku</h2>
+        <div class="detail-author">
+          <i class="fa-solid fa-user-pen"></i> <span id="detailAuthor">Penulis</span>
+        </div>
+        <div class="detail-rating-big" id="detailRating"></div>
+      </div>
+      
+      <div class="detail-meta-grid">
+        <div class="detail-meta-item"><div class="detail-meta-label">Tahun Terbit</div><div class="detail-meta-value" id="detailYear">-</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">Penerbit</div><div class="detail-meta-value" id="detailPublisher">-</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">Bahasa Asli</div><div class="detail-meta-value" id="detailLanguage">-</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">ISBN</div><div class="detail-meta-value" id="detailISBN">-</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">Halaman</div><div class="detail-meta-value" id="detailPages">-</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">Kategori</div><div class="detail-meta-value" id="detailCategory">-</div></div>
+      </div>
+      
+      <div class="detail-synopsis">
+        <h4><i class="fa-solid fa-align-left"></i> Sinopsis & Abstrak</h4>
+        <p id="detailSynopsis">-</p>
+      </div>
+      
+      <div class="detail-status-bar">
+        <div class="detail-pill ok"><i class="fa-solid fa-check-circle"></i> Status: Tersedia (Digital)</div>
+        <div class="detail-pill call"><i class="fa-solid fa-barcode"></i> Call Number: <span id="detailCall">-</span></div>
+        <div class="detail-pill call"><i class="fa-solid fa-book"></i> Format: <span id="detailType">-</span></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Toast Notification -->
 <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Berhasil!</span></div>
@@ -790,7 +872,7 @@
             <div class="category-icon-wrapper"><i class="fa-solid fa-atom"></i></div>
             <h3>Akademik</h3><p>Buku Edukasi</p>
           </div>
-          <div class="category-card btn-kategori-cepat" data-redirect-filter="indonesia">
+          <div class="category-card btn-kategori-cepat" data-redirect-filter="bahasa_indonesia">
             <div class="category-icon-wrapper"><i class="fa-solid fa-language"></i></div>
             <h3>Bahasa Indonesia</h3><p>Literatur Lokal</p>
           </div>
@@ -887,28 +969,19 @@
               <h3>A Brief History of Time</h3><p>Stephen Hawking</p>
             </div>
           </article>
-          <article class="book-card" style="cursor: pointer;"
-         data-isbn="978-602-424-694-5"
-         data-penerbit="Harper"
-         data-tahun="2015"
-         data-ddc="909.09 / Har"
-         data-bahasa="English / Terjemahan"
-         data-fisik="528 hlm; 23 cm"
-         data-sinopsis="Seratus ribu tahun yang lalu, setidaknya ada enam spesies manusia di Bumi. Hari ini hanya tersisa satu: kita, Homo sapiens. Bagaimana spesies kita berhasil mendominasi planet ini? Sapiens mengeksplorasi sejarah umat manusia dari Zaman Batu hingga Abad ke-21.">
-         
-  <div class="book-cover-wrapper">
-    <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=600&auto=format&fit=crop" alt="Buku">
-    <div class="book-action-overlay">
-      <button class="action-btn"><i class="fa-solid fa-book-open"></i></button>
-      <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
-    </div>
-  </div>
-  <div class="book-info">
-    <div class="book-meta"><span class="book-tag">Sejarah</span><div class="book-rating"></div></div>
-    <h3>Sapiens: A Brief History</h3>
-    <p>Yuval Noah Harari</p>
-  </div>
-</article>
+          <article class="book-card">
+            <div class="book-cover-wrapper">
+              <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=600&auto=format&fit=crop" alt="Buku">
+              <div class="book-action-overlay">
+                <button class="action-btn"><i class="fa-solid fa-book-open"></i></button>
+                <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
+              </div>
+            </div>
+            <div class="book-info">
+              <div class="book-meta"><span class="book-tag">Sejarah</span><div class="book-rating"></div></div>
+              <h3>Sapiens: A Brief History</h3><p>Yuval Noah Harari</p>
+            </div>
+          </article>
           <article class="book-card">
             <div class="book-cover-wrapper">
               <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=600&auto=format&fit=crop" alt="Buku">
@@ -941,7 +1014,7 @@
           <ul style="list-style: none; padding: 0; color: #a0aec0; line-height: 1.8;">
             <li><strong style="color: #fff;">Nama:</strong> Lunarscientia Digital Library</li>
             <li><strong style="color: #fff;">URL:</strong> <a href="#" style="color: var(--primary-light); text-decoration: none;">https://lunarscientia.vercel.app/</a></li>
-            <li><strong style="color: #fff;">Status:</strong> <span style="background: rgba(46, 213, 115, 0.2); color: #2ed573; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 5px;">ONLINE</span></li>
+            <li><strong style="color: #fff;">Status:</strong> <span style="background: rgba(255, 0, 0, 0); color: #FF0000; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 5px;">ONLINE</span></li>
           </ul>
           <p style="margin-top: 15px; color: #a0aec0; line-height: 1.6; font-size: 0.95rem;">
             Lunarscientia beroperasi sepenuhnya secara <strong>online</strong> tanpa wujud bangunan fisik, mendigitalkan akses literatur agar pengguna dapat membaca di mana saja dan kapan saja.
@@ -1118,7 +1191,7 @@
 		  <div class="filter-pill" data-filter="novel">Novel</div>
 		  <div class="filter-pill" data-filter="komik">Komik</div>
 		  <div class="filter-pill" data-filter="akademik">Akademik</div>
-		  <div class="filter-pill" data-filter="indonesia">Bahasa Indonesia</div>
+		  <div class="filter-pill" data-filter="bahasa_indonesia">Bahasa Indonesia</div>
 		  <div class="filter-pill" data-filter="english">English</div>
 		  <div class="filter-pill" data-filter="japanese">Japanese</div>
 		  <div class="filter-pill" data-filter="chinese">Chinese</div>
@@ -1204,7 +1277,7 @@
           <div class="category-icon-wrapper"><i class="fa-solid fa-atom"></i></div>
           <div class="cat-info"><h3>Akademik <i class="fa-solid fa-arrow-right-long" style="font-size:12px;margin-left:5px"></i></h3><p>Buku pendidikan, jurnal penelitian, dan ilmu pengetahuan ilmiah.</p><span class="cat-trending"><i class="fa-solid fa-fire-flame-curved"></i> Referensi studi</span></div>
         </div>
-        <div class="category-card category-card-large btn-kategori-cepat" data-redirect-filter="indonesia">
+        <div class="category-card category-card-large btn-kategori-cepat" data-redirect-filter="bahasa_indonesia">
           <div class="category-icon-wrapper"><i class="fa-solid fa-language"></i></div>
           <div class="cat-info"><h3>Bahasa Indonesia <i class="fa-solid fa-arrow-right-long" style="font-size:12px;margin-left:5px"></i></h3><p>Karya literatur nusantara kebanggaan sastra Indonesia.</p><span class="cat-trending"><i class="fa-solid fa-fire-flame-curved"></i> Karya lokal unggulan</span></div>
         </div>
@@ -1680,139 +1753,198 @@
   </div>
 </footer>
 
-<div id="bookDetailModal" class="book-modal-overlay">
-  <div class="book-modal-content">
-    <button class="book-modal-close" onclick="closeBookModal()"><i class="fa-solid fa-xmark"></i></button>
-    
-    <div class="book-modal-body">
-      <div class="book-modal-left">
-        <img id="modalBookCover" src="" alt="Sampul Buku">
-      </div>
-      
-      <div class="book-modal-right">
-        <h2 id="modalBookTitle">Judul Buku</h2>
-        <p id="modalBookAuthor" class="modal-author">Oleh Penulis</p>
-        
-        <div class="modal-badge-container">
-          <span id="modalBookCategory" class="modal-badge">Kategori</span>
-        </div>
-
-        <div class="metadata-grid">
-          <div class="metadata-item">
-            <span class="meta-label">ISBN / ISSN</span>
-            <span id="modalBookISBN" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Penerbit</span>
-            <span id="modalBookPublisher" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Tahun Terbit</span>
-            <span id="modalBookYear" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Klasifikasi DDC</span>
-            <span id="modalBookDDC" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Bahasa</span>
-            <span id="modalBookLang" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Deskripsi Fisik</span>
-            <span id="modalBookPhysical" class="meta-value">-</span>
-          </div>
-        </div>
-
-        <div class="modal-synopsis">
-          <h3>Sinopsis / Abstrak</h3>
-          <p id="modalBookSynopsis">Keterangan sinopsis akan tampil di sini.</p>
-        </div>
-
-        <div class="modal-actions">
-          <button id="modalActionBorrow" class="btn-borrow-modal"><i class="fa-solid fa-book-open"></i> Mulai Membaca</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-	
 <script>
+  // ==========================================
+// DATABASE BUKU — METADATA OPAC LENGKAP
+// ==========================================
+const bookDatabase = {
+  // --- BERANDA / POPULER ---
+  "Cosmos: A Personal Voyage": { year:"1980", publisher:"Random House", language:"English", isbn:"978-03945096-9-6", pages:"365", category:"Sains / Astronomi", type:"Non-Fiksi", rating:5, call:"520 SAG c", synopsis:"Eksplorasi kosmologi untuk umum yang menggabungkan astronomi, fisika, dan filsafat kehidupan oleh astronom legendaris Carl Sagan." },
+  "A Brief History of Time": { year:"1988", publisher:"Bantam Dell", language:"English", isbn:"978-05533801-6-3", pages:"256", category:"Fisika / Kosmologi", type:"Non-Fiksi", rating:5, call:"530 HAW b", synopsis:"Penjelasan mendalam tentang lubang hitam, Big Bang, dan teori waktu untuk pembaca umum oleh Stephen Hawking." },
+  "Sapiens: A Brief History": { year:"2011", publisher:"Harper", language:"English", isbn:"978-00623160-9-7", pages:"443", category:"Sejarah / Antropologi", type:"Non-Fiksi", rating:5, call:"909 HAR s", synopsis:"Ringkasan sejarah umat manusia dari Zaman Batu hingga revolusi ilmiah yang mengubah cara kita memahami spesies kita." },
+  "Atomic Habits": { year:"2018", publisher:"Avery", language:"English", isbn:"978-07352112-9-2", pages:"320", category:"Pengembangan Diri / Psikologi", type:"Non-Fiksi", rating:5, call:"158.1 CLE a", synopsis:"Panduan praktis membangun kebiasaan baik, menghilangkan kebiasaan buruk, dan menguasai perilaku komponen demi komponen." },
+
+  // --- JEPANG ---
+  "One Piece 4": { year:"1997", publisher:"Shueisha", language:"Japanese", isbn:"978-4-08-872540-4", pages:"192", category:"Komik / Petualangan", type:"Fiksi", rating:5, call:"MNC ODA o.04", synopsis:"Petualangan Monkey D. Luffy dan kru Topi Jerami menghadapi musuh kuat di Grand Line demi menemukan harta karun legendaris." },
+  "NARUTO -ナルト- 第01巻": { year:"2000", publisher:"Shueisha", language:"Japanese", isbn:"978-4-08-872840-5", pages:"192", category:"Komik / Aksi", type:"Fiksi", rating:5, call:"MNC KIS n.01", synopsis:"Naruto Uzumaki, ninja remaja yang bercita-cita menjadi Hokage demi mendapatkan pengakuan warga desa Konoha." },
+  "Death Note 短編集": { year:"2008", publisher:"Shueisha", language:"Japanese", isbn:"978-4-08-874248-7", pages:"208", category:"Komik / Misteri", type:"Fiksi", rating:5, call:"MNC OHB d", synopsis:"Kumpulan cerita pendek dari universe Death Note. Light Yagami menemukan buku supernatural yang memungkinkannya membunuh siapa saja hanya dengan menulis nama." },
+  "Hagane no renkinjutsushi = Fullmetal alchemist": { year:"2002", publisher:"Square Enix", language:"Japanese", isbn:"978-4-7575-0801-0", pages:"192", category:"Komik / Fantasi", type:"Fiksi", rating:5, call:"MNC ARA h", synopsis:"Dua bersaudara alkemis menggunakan kemampuan mereka untuk mencari Batu Bertuah dan memperbaiki kesalahan masa lalu yang tragis." },
+  "Noruwei no mori, ノルウェイの森": { year:"1987", publisher:"Kodansha", language:"Japanese", isbn:"978-4-06-203515-2", pages:"296", category:"Novel / Romansa", type:"Fiksi", rating:4, call:"FIC MUR n", synopsis:"Kisah cinta tragis Toru Watanabe yang terjebak antara kenangan masa lalu dan realitas yang pahit di Jepang modern." },
+  "こころ - Kokoro": { year:"1914", publisher:"Iwanami Shoten", language:"Japanese", isbn:"978-4-00-310101-8", pages:"272", category:"Novel / Klasik", type:"Fiksi", rating:5, call:"FIC SOU k", synopsis:"Eksplorasi mendalam tentang egoisme, rasa malu, dan perubahan sosial di Jepang Meiji melalui persahabatan yang kompleks antara Sensei dan narrator." },
+  "Kokuhaku = The confession": { year:"2008", publisher:"Futabasha", language:"Japanese", isbn:"978-4-575-23584-8", pages:"272", category:"Novel / Thriller", type:"Fiksi", rating:4, call:"FIC MIN k", synopsis:"Seorang guru membalas dendam dengan cara tak terduga setelah putrinya tewas dibunuh oleh muridnya di kelas." },
+  "トヨタ生産方式応用ハンドブック": { year:"1984", publisher:"JUSE Press", language:"Japanese", isbn:"978-4-8103-1202-1", pages:"354", category:"Akademik / Ekonomi", type:"Non-Fiksi", rating:4, call:"658.5 KAK t", synopsis:"Panduan komprehensif penerapan Sistem Produksi Toyota untuk efisiensi manufaktur dan eliminasi pemborosan (muda)."},
+  "現代語訳 五輪書 完全版": { year:"2015", publisher:"Chikuma Shobo", language:"Japanese", isbn:"978-4-480-01651-0", pages:"288", category:"Akademik / Filsafat", type:"Non-Fiksi", rating:5, call:"355.4 MUS g", synopsis:"Terjemahan modern karya strategi pertempuran legendaris Miyamoto Musashi yang abadi dan masih relevan dalam manajemen modern." },
+  "現代日本語文法2 第3部格と構文": { year:"2016", publisher:"Kuroshio", language:"Japanese", isbn:"978-4-8742-4738-7", pages:"312", category:"Akademik / Bahasa", type:"Non-Fiksi", rating:4, call:"495.6 NIH g", synopsis:"Analisis mendalam tata bahasa Jepang modern untuk pembelajar tingkat menengah dan mahir, fokus pada partikel dan struktur kalimat." },
+
+  // --- TIONGKOK ---
+  "镇魂街第一季（1-5册）": { year:"2010", publisher:"Zhejiang People's", language:"Chinese", isbn:"978-7213-0423-45", pages:"160", category:"Komik / Fantasi", type:"Fiksi", rating:4, call:"MNC XUC z", synopsis:"Di dunia di mana roh dan manusia berdampingan, seorang pemuda menguasai kekuatan pelindung jiwa untuk melawan roh jahat." },
+  "三体 (The Three-Body Problem)": { year:"2006", publisher:"Chongqing Press", language:"Chinese", isbn:"978-7229-0309-33", pages:"302", category:"Novel / Sci-Fi", type:"Fiksi", rating:5, call:"FIC LIU s", synopsis:"Kontak pertama umat manusia dengan peradaban alien Trisolaris yang mengancam keberadaan bumi melalui permainan VR misterius." },
+  "内证观察笔记:真图本中医解剖学纲目": { year:"2011", publisher:"Guangxi Normal", language:"Chinese", isbn:"978-7549-5012-34", pages:"240", category:"Akademik / Medis", type:"Non-Fiksi", rating:4, call:"611 WUM n", synopsis:"Catatan pengamatan anatomi tradisional Tiongkok berdasarkan pengalaman meditasi dan praktik internal penulis." },
+  "西游记 (Journey to the West)": { year:"1592", publisher:"People's Literature", language:"Chinese", isbn:"978-7020-0087-28", pages:"1256", category:"Novel / Klasik", type:"Fiksi", rating:5, call:"FIC WUC x", synopsis:"Petualangan epik Biksu Tong dan tiga muridnya menuju India untuk mengambil kitab suci Buddha melalui 81 rintangan." },
+  "活着 (To Live)": { year:"1993", publisher:"Changjiang Arts", language:"Chinese", isbn:"978-7535-4252-39", pages:"191", category:"Novel / Sejarah", type:"Fiksi", rating:5, call:"FIC YUH h", synopsis:"Perjalanan hidup Fugui yang melewati perubahan besar Tiongkok dari revolusi hingga modernisasi dengan kekuatan hidup yang keras kepala." },
+  "诸子百家系列套装 (Seri Seratus Aliran Pemikiran)": { year:"2015", publisher:"Zhonghua Book", language:"Chinese", isbn:"978-7101-1012-34", pages:"4500", category:"Akademik / Filsafat", type:"Non-Fiksi", rating:5, call:"181 ZHO z", synopsis:"Kumpulan lengkap pemikiran seratus aliran filsuf Tiongkok kuno yang membentuk fondasi peradaban Timur Jauh." },
+  "论语 (Analek Kong Hu Cu)": { year:"-475", publisher:"Zhonghua Book", language:"Chinese", isbn:"978-7101-0030-81", pages:"286", category:"Akademik / Filsafat", type:"Non-Fiksi", rating:5, call:"181 KON l", synopsis:"Ajarannya menjadi fondasi etika dan moralitas Tiongkok selama lebih dari dua milenium, berisi dialog antara Konfusius dan murid-muridnya." },
+  "全职高手 (The King's Avatar)": { year:"2011", publisher:"Zhejiang People's", language:"Chinese", isbn:"978-7213-0712-34", pages:"296", category:"Novel / Aksi", type:"Fiksi", rating:4, call:"FIC HUQ q", synopsis:"Seorang pro gamer kembali dari nol setelah dikeluarkan dari tim dan meraih kembali kejayaannya di game Glory." },
+  "魔道祖师 (Mo Dao Zu Shi)": { year:"2016", publisher:"Pingxie", language:"Chinese", isbn:"978-7559-4123-45", pages:"304", category:"Novel / Fantasi", type:"Fiksi", rating:5, call:"FIC MOX m", synopsis:"Seorang praktisi iblis yang bangkit kembali dan mengungkap misteri pembantaian klan besarnya delapan belas tahun lalu." },
+  "长歌行 (Song of the Long March)": { year:"2011", publisher:"Zhejiang People's", language:"Chinese", isbn:"978-7213-0456-78", pages:"160", category:"Komik / Sejarah", type:"Fiksi", rating:5, call:"MNC XIA c", synopsis:"Kisah Putri Yongning yang bertahan hidup setelah kerajaan jatuh dan memulai perjalanan panjang untuk membalas dendam." },
+
+  // --- INGGRIS ---
+  "And Then There Were None": { year:"1939", publisher:"Collins Crime Club", language:"English", isbn:"978-0007-1368-34", pages:"264", category:"Novel / Misteri", type:"Fiksi", rating:5, call:"FIC CHR a", synopsis:"Sepuluh orang asing diundang ke pulau terpencil dan dibunuh satu per satu menurut puisi anak-anak yang mengerikan." },
+  "Murder on the Orient Express": { year:"1934", publisher:"Collins Crime Club", language:"English", isbn:"978-0007-1193-18", pages:"256", category:"Novel / Misteri", type:"Fiksi", rating:5, call:"FIC CHR m", synopsis:"Hercule Poirot menyelidiki pembunuhan di kereta mewah Orient Express yang terjebak badai salju di Yugoslavia." },
+  "Nineteen Eighty-Four [= 1984]": { year:"1949", publisher:"Secker & Warburg", language:"English", isbn:"978-0451-5249-35", pages:"328", category:"Novel / Sci-Fi", type:"Fiksi", rating:5, call:"FIC ORW n", synopsis:"Dystopia klasik tentang totalitarianisme, pengawasan massal, dan manipulasi kebenaran oleh negara Oseania yang all-powerful." },
+  "To Kill A Mockingbird": { year:"1960", publisher:"J.B. Lippincott", language:"English", isbn:"978-0061-1200-84", pages:"281", category:"Novel / Klasik", type:"Fiksi", rating:5, call:"FIC LEE t", synopsis:"Scout Finch menyaksikan ayahnya, Atticus Finch, membela seorang pria kulit hitam yang dituduh secara tidak adil di Alabama Selatan." },
+  "The Great Gatsby": { year:"1925", publisher:"Charles Scribner's", language:"English", isbn:"978-0743-2735-65", pages:"180", category:"Novel / Klasik", type:"Fiksi", rating:4, call:"FIC FIT g", synopsis:"Kisah tragis Jay Gatsby dan obsesinya terhadap masa lalu di tengah gemerlap dan kemewahan Long Island tahun 1920-an." },
+  "Harry Potter and the Philosopher's Stone": { year:"1997", publisher:"Bloomsbury", language:"English", isbn:"978-0747-5326-99", pages:"223", category:"Novel / Fantasi", type:"Fiksi", rating:5, call:"FIC ROW h.01", synopsis:"Harry Potter menemukan bahwa dirinya adalah penyihir dan memulai petualangan magis pertamanya di Sekolah Sihir Hogwarts." },
+  "Algorithmic Thinking": { year:"2021", publisher:"No Starch Press", language:"English", isbn:"978-1718-5008-08", pages:"432", category:"Akademik / IT", type:"Non-Fiksi", rating:5, call:"005.1 ZIN a", synopsis:"Pengantar pemecahan masalah komputasional menggunakan Python untuk pemula dan mahasiswa ilmu komputer." },
+  "Principles of Economics, 10e": { year:"2020", publisher:"Cengage Learning", language:"English", isbn:"978-0357-0383-14", pages:"816", category:"Akademik / Ekonomi", type:"Non-Fiksi", rating:5, call:"330 MAN p", synopsis:"Prinsip-prinsip ekonomi mikro dan makro yang disajikan dengan studi kasus kontemporer dan pendekatan pedagogis modern." },
+  "Romeo and Juliet": { year:"1597", publisher:"Shakespeare's", language:"English", isbn:"978-0743-4771-16", pages:"288", category:"Novel / Klasik", type:"Fiksi", rating:5, call:"822.33 SHA r", synopsis:"Kisah tragis dua remaja dari keluarga bermusuhan di Verona yang jatuh cinta dan berujung kematian karena konflik kedua klan." },
+  "Batman: The Killing Joke": { year:"1988", publisher:"DC Comics", language:"English", isbn:"978-1401-2166-72", pages:"64", category:"Komik / Aksi", type:"Fiksi", rating:5, call:"MNC MOO b", synopsis:"Joker mencoba membuktikan bahwa siapa pun bisa menjadi gila seperti dirinya hanya dengan satu hari buruk yang cukup traumatis." },
+
+  // --- KOREA ---
+  "나 혼자만 레벨업 (Solo Leveling)": { year:"2016", publisher:"D&C Media", language:"Korean", isbn:"979-1191-3637-21", pages:"312", category:"Novel / Fantasi", type:"Fiksi", rating:5, call:"FIC CHU s", synopsis:"Sung Jin-Woo, pemburu terlemah, mendapatkan kekuatan unik untuk naik level tanpa batas setelah memasuki dungeon ganda yang mematikan." },
+  "전지적 독자 시점 (Omniscient Reader)": { year:"2018", publisher:"Minumsa", language:"Korean", isbn:"978-8937-4702-45", pages:"384", category:"Novel / Fantasi", type:"Fiksi", rating:5, call:"FIC SIN o", synopsis:"Kim Dokja menjadi satu-satunya pembaca yang mengetahui ending novel favoritnya yang tiba-tiba menjadi realitas dunia baru yang kejam." },
+  "백작가의 망나니가 되었다 (Trash of the Count's Family)": { year:"2017", publisher:"Joara", language:"Korean", isbn:"979-1165-3412-34", pages:"352", category:"Novel / Fantasi", type:"Fiksi", rating:4, call:"FIC YOO b", synopsis:"Seorang pria biasa bereinkarnasi menjadi penjahat keluarga bangsawan dalam novel dan mencoba bertahan hidup dari plot aslinya." },
+  "템빨 (Overgeared)": { year:"2015", publisher:"Joara", language:"Korean", isbn:"979-1165-3456-78", pages:"328", category:"Novel / Aksi", type:"Fiksi", rating:4, call:"FIC PAR o", synopsis:"Grid, seorang pandai besi dengan keberuntungan buruk, berkembang menjadi legenda di game virtual Satisfy melalui kerja keras." },
+  "튜토리얼이 너무 어렵다 (The Tutorial is Too Hard)": { year:"2016", publisher:"Joara", language:"Korean", isbn:"979-1165-3490-12", pages:"296", category:"Novel / Aksi", type:"Fiksi", rating:4, call:"FIC GAN t", synopsis:"Lee Ho Jae terjebak dalam tutorial dengan tingkat kesulitan neraka di dunia baru yang penuh monster dan tantangan hidup-mati." },
+  "환생좌 (Reincarnator)": { year:"2014", publisher:"Joara", language:"Korean", isbn:"979-1165-3434-56", pages:"280", category:"Novel / Fantasi", type:"Fiksi", rating:4, call:"FIC ALL h", synopsis:"Seorang pria kembali ke masa lalu dengan ingatan masa depan untuk menyelamatkan umat manusia dari invasi monster yang menghancurkan." },
+  "달빛조각사 (The Legendary Moonlight Sculptor)": { year:"2007", publisher:"Joara", language:"Korean", isbn:"979-1165-3478-90", pages:"336", category:"Novel / Sci-Fi", type:"Fiksi", rating:4, call:"FIC NAM d", synopsis:"Lee Hyun, seorang gamer miskin, menemukan kekayaan dan ketenaran melalui seni pahatan virtual yang terlupakan di game Royal Road." },
+  "메모라이즈 (Memorize)": { year:"2012", publisher:"Joara", language:"Korean", isbn:"979-1165-3423-45", pages:"304", category:"Novel / Fantasi", type:"Fiksi", rating:4, call:"FIC ROY m", synopsis:"Seorang pria kembali ke masa lalu dan menggunakan kekuatan magisnya yang telah dihafal untuk membangun kekuasaan baru di dunia yang hancur." },
+  "재벌집 막내아들 (Reborn Rich)": { year:"2020", publisher:"Joara", language:"Korean", isbn:"979-1165-3467-89", pages:"368", category:"Novel / Drama", type:"Fiksi", rating:5, call:"FIC SAN j", synopsis:"Seorang pegawai yang dibunuh oleh keluarga chaebol bereinkarnasi menjadi cucu keluarga tersebut dan mencoba mengambil alih kekuasaan dari dalam." },
+  "화산귀환 (Return of the Mount Hua Sect)": { year:"2019", publisher:"Joara", language:"Korean", isbn:"979-1165-3401-23", pages:"320", category:"Novel / Aksi", type:"Fiksi", rating:5, call:"FIC BIG h", synopsis:"Chung Myung, Pedang Suci Gunung Hua, kembali ke masa hidupnya seratus tahun kemudian untuk menyelamatkan sektenya dari kehancuran total." },
+
+  // --- INDONESIA ---
+  "Cantik Itu Luka": { year:"2002", publisher:"Gramedia", language:"Indonesia", isbn:"978-9799-0233-35", pages:"537", category:"Novel / Sejarah", type:"Fiksi", rating:5, call:"FIC KUR c", synopsis:"Eksplorasi magis realisme tentang sejarah, kekerasan, dan mitologi di sebuah pulau fiksi Indonesia yang penuh dengan dongeng dan luka kolonial." },
+  "Laskar Pelangi": { year:"2005", publisher:"Bentang Pustaka", language:"Indonesia", isbn:"978-9793-0627-92", pages:"529", category:"Novel / Drama", type:"Fiksi", rating:5, call:"FIC HIR l", synopsis:"Semangat sepuluh anak Belitong dalam mengejar pendidikan meski keterbatasan ekonomi dan sosial di pedalaman timur Indonesia." },
+  "Bumi Manusia": { year:"1980", publisher:"Hasta Mitra", language:"Indonesia", isbn:"978-9799-7312-34", pages:"535", category:"Novel / Sejarah", type:"Fiksi", rating:5, call:"FIC PRB b", synopsis:"Perjalanan Minke, pribumi terpelajar, melawan kolonialisme Belanda melalui tulisan, organisasi, dan cinta terlarang yang tragis." },
+  "SI Juki: Komik Strip": { year:"2014", publisher:"Gramedia", language:"Indonesia", isbn:"978-6024-2469-45", pages:"136", category:"Komik / Komedi", type:"Fiksi", rating:4, call:"MNC MEO s", synopsis:"Kumpulan strip komedi tentang Juki, sosok jenaka yang merepresentasikan kehidupan urban Jakarta dengan humor absurd dan satire sosial." },
+  "Laut Bercerita": { year:"2001", publisher:"Kepustakaan Populer", language:"Indonesia", isbn:"978-9799-1048-84", pages:"379", category:"Novel / Sejarah", type:"Fiksi", rating:5, call:"FIC CHU l", synopsis:"Kisah aktivis mahasiswa tahun 1990-an yang hilang dan ditelan lautan tanpa jejak, diceritakan dari perspektif orang-orang yang ditinggalkan." },
+  "Tan Malaka - MADILOG": { year:"1946", publisher:"Rowland Books", language:"Indonesia", isbn:"978-6024-2498-78", pages:"644", category:"Akademik / Filsafat", type:"Non-Fiksi", rating:5, call:"320.5 TAN m", synopsis:"Analisis materialisme, idealisme, dan logika dalam sejarah perjuangan Indonesia oleh Tan Malaka, tokoh revolusioner yang terlupakan." },
+  "Gadis Kretek": { year:"2012", publisher:"Gramedia", language:"Indonesia", isbn:"978-6024-2412-34", pages:"368", category:"Novel / Sejarah", type:"Fiksi", rating:4, call:"FIC KUM g", synopsis:"Kisah cinta segitiga yang terjalin dengan sejarah industri rokok kretek di Jawa, aroma cengkih, dan perjalanan hidup seorang perempuan kuat." },
+  "Filosofi Teras": { year:"2018", publisher:"Kompas", language:"Indonesia", isbn:"978-6024-2469-45", pages:"346", category:"Akademik / Self-Help", type:"Non-Fiksi", rating:5, call:"158.1 MAN f", synopsis:"Pengenalan praktis Stoisisme untuk mengelola emosi, stres, dan kecemasan di kehidupan modern Indonesia yang penuh tekanan." },
+  "Hujan Bulan Juni: Pilihan Sajak": { year:"2014", publisher:"Gramedia", language:"Indonesia", isbn:"978-6024-2456-78", pages:"116", category:"Puisi / Romansa", type:"Fiksi", rating:5, call:"899.221 DAM h", synopsis:"Kumpulan sajak cinta klasik Sapardi Djoko Damono yang menjadi referensi sastra Indonesia modern dan pelajaran retorika emosional." },
+  "Jakarta Sebelum Pagi": { year:"2016", publisher:"Gramedia", language:"Indonesia", isbn:"978-6024-2489-01", pages:"216", category:"Novel / Romansa", type:"Fiksi", rating:4, call:"FIC ZEI j", synopsis:"Kisah cinta yang terjalin di antara hiruk pikuk Jakarta dengan nuansa surealisme, absurditas, dan puisi yang melawan realitas keras kota." }
+};
 
 // ==========================================
-// LOGIKA MODAL DETAIL BUKU (OPAC METADATA)
+// MODAL CONTROLLER
 // ==========================================
+function openBookDetail(source) {
+  let title = "", author = "", cover = "", tags = [];
+  window._activeDetailCard = null;
 
-function openBookModal(cardElement) {
+  if (source.classList.contains('book-card')) {
+    title = source.querySelector('h3').innerText.trim();
+    author = source.querySelector('.book-info p').innerText.trim();
+    cover = source.querySelector('img')?.getAttribute('src') || "";
+    tags = Array.from(source.querySelectorAll('.book-tag')).map(t => t.innerText.trim());
+    window._activeDetailCard = source;
+  } else if (source.classList.contains('history-item')) {
+    title = source.querySelector('h3').innerText.trim();
+    author = source.querySelector('.history-details p').innerText.split('•')[0].trim();
+    cover = source.querySelector('img')?.getAttribute('src') || "";
+    tags = [];
+  } else if (typeof source === 'string') {
+    title = source;
+    author = "-";
+  }
+
+  const db = bookDatabase[title] || {};
+
+  document.getElementById('detailCover').src = cover || "https://via.placeholder.com/300x450/0a0f25/8B5CF6?text=No+Cover";
+  document.getElementById('detailTitle').innerText = title;
+  document.getElementById('detailAuthor').innerText = author;
+  document.getElementById('detailYear').innerText = db.year || "Tidak tersedia";
+  document.getElementById('detailPublisher').innerText = db.publisher || "Tidak tersedia";
+  document.getElementById('detailLanguage').innerText = db.language || tags[0] || "Tidak tersedia";
+  document.getElementById('detailISBN').innerText = db.isbn || "-";
+  document.getElementById('detailPages').innerText = db.pages ? db.pages + " hlm" : "-";
+  document.getElementById('detailCategory').innerText = db.category || (tags.slice(1).join(', ') || "-");
+  document.getElementById('detailType').innerText = db.type || "Fiksi";
+  document.getElementById('detailCall').innerText = db.call || "-";
+  document.getElementById('detailSynopsis').innerText = db.synopsis || "Sinopsis untuk buku ini belum tersedia dalam katalog digital kami. Silakan hubungi pustakawan untuk informasi lebih lanjut.";
+
+  // Render stars
+  const r = db.rating || 0;
+  let stars = '';
+  for (let i = 1; i <= 5; i++) stars += `<i class="${i <= r ? 'fa-solid' : 'fa-regular'} fa-star"></i>`;
+  document.getElementById('detailRating').innerHTML = stars + (r ? `<span class="detail-rating-text">${r}.0 / 5.0</span>` : "");
+
+  // Render tags
+  const tagContainer = document.getElementById('detailTags');
+  const tagSources = tags.length ? tags : (db.category ? db.category.split('/') : []);
+  tagContainer.innerHTML = tagSources.map(t => `<span class="detail-tag">${t.trim()}</span>`).join('');
+
   const modal = document.getElementById('bookDetailModal');
-  
-  // Ambil Teks dari Card HTML Anda yang sebenarnya
-  const title = cardElement.querySelector('.book-info h3') ? cardElement.querySelector('.book-info h3').innerText : 'Tanpa Judul';
-  const author = cardElement.querySelector('.book-info p') ? cardElement.querySelector('.book-info p').innerText : 'Tanpa Penulis';
-  const coverSrc = cardElement.querySelector('img') ? cardElement.querySelector('img').getAttribute('src') : '';
-  const categoryElement = cardElement.querySelector('.book-tag');
-  const category = categoryElement ? categoryElement.innerText : 'Umum';
-  
-  // Ambil Metadata dari atribut data-* yang baru kita buat
-  const isbn = cardElement.getAttribute('data-isbn') || 'Tidak Ada ISBN';
-  const publisher = cardElement.getAttribute('data-penerbit') || '-';
-  const year = cardElement.getAttribute('data-tahun') || '-';
-  const ddc = cardElement.getAttribute('data-ddc') || '-';
-  const lang = cardElement.getAttribute('data-bahasa') || '-';
-  const physical = cardElement.getAttribute('data-fisik') || '-';
-  const synopsis = cardElement.getAttribute('data-sinopsis') || 'Sinopsis tidak tersedia untuk judul ini.';
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+window.openBookDetail = openBookDetail;
 
-  // Suntikkan data tersebut ke dalam Modal
-  document.getElementById('modalBookTitle').innerText = title;
-  document.getElementById('modalBookAuthor').innerText = 'Oleh: ' + author;
-  document.getElementById('modalBookCover').setAttribute('src', coverSrc);
-  document.getElementById('modalBookCategory').innerText = category;
-  document.getElementById('modalBookISBN').innerText = isbn;
-  document.getElementById('modalBookPublisher').innerText = publisher;
-  document.getElementById('modalBookYear').innerText = year;
-  document.getElementById('modalBookDDC').innerText = ddc;
-  document.getElementById('modalBookLang').innerText = lang;
-  document.getElementById('modalBookPhysical').innerText = physical;
-  document.getElementById('modalBookSynopsis').innerText = synopsis;
+function closeBookDetail() {
+  document.getElementById('bookDetailModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+window.closeBookDetail = closeBookDetail;
 
-  // Sambungkan tombol baca di dalam modal agar memicu aksi yang sama
-  document.getElementById('modalActionBorrow').onclick = function() {
-    const actionBtn = cardElement.querySelector('.action-btn:not(.secondary)');
-    if (actionBtn) actionBtn.click();
-    closeBookModal();
-  };
+// Tutup dengan klik overlay atau tombol Escape
+document.getElementById('bookDetailModal').addEventListener('click', (e) => { if (e.target.id === 'bookDetailModal') closeBookDetail(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBookDetail(); });
 
-  // Buka Modalnya
-  modal.classList.add('open');
+// ==========================================
+// AKSI DARI DALAM MODAL
+// ==========================================
+function _findCardByTitle(title) {
+  const all = document.querySelectorAll('#koleksi-grid .book-card, .books-scroll-container .book-card, #section-favorit .books-grid .book-card');
+  for (const c of all) { if (c.querySelector('h3')?.innerText.trim() === title) return c; }
+  return null;
 }
 
-function closeBookModal() {
-  document.getElementById('bookDetailModal').classList.remove('open');
+function pinjamDariDetail() {
+  const title = document.getElementById('detailTitle').innerText;
+  let target = window._activeDetailCard || _findCardByTitle(title);
+  if (target) {
+    const btn = target.querySelector('.action-btn:not(.secondary)');
+    if (btn) { btn.click(); showToast(`Meminjam "${title}"...`); }
+    else showToast(`Buku "${title}" sedang diproses peminjaman.`);
+  } else {
+    showToast(`Buku "${title}" dipinjam (simulasi langsung).`);
+  }
+  closeBookDetail();
 }
+window.pinjamDariDetail = pinjamDariDetail;
 
-// Pantau setiap klik di seluruh halaman
-document.addEventListener("DOMContentLoaded", function() {
-  document.body.addEventListener('click', function(e) {
-    // Cek apakah yang diklik adalah kartu buku
-    const card = e.target.closest('.book-card');
-    
-    if (card) {
-      // PENTING: Jangan buka modal kalau user mengklik tombol baca atau tombol favorit (hati)
-      if (e.target.closest('.action-btn')) {
-        return; 
-      }
-      // Jika yang diklik area lain dari kartu, buka modalnya
-      openBookModal(card);
-    }
-  });
+function tambahFavDariDetail() {
+  const title = document.getElementById('detailTitle').innerText;
+  let target = window._activeDetailCard || _findCardByTitle(title);
+  if (target) {
+    const btn = target.querySelector('.action-btn.secondary');
+    if (btn) btn.click();
+    else showToast(`"${title}" ditambahkan ke favorit!`);
+  } else {
+    showToast(`"${title}" ditambahkan ke favorit!`);
+  }
+}
+window.tambahFavDariDetail = tambahFavDariDetail;
 
-  // Tutup modal jika user klik area gelap di luarnya
-  const modalOverlay = document.getElementById('bookDetailModal');
-  modalOverlay.addEventListener('click', function(e) {
-    if (e.target === modalOverlay) closeBookModal();
-  });
+// ==========================================
+// EVENT DELEGATION — BUKA DETAIL
+// ==========================================
+document.addEventListener('click', function(e) {
+  // 1. Dari .book-card (Koleksi, Beranda, Favorit)
+  const card = e.target.closest('.book-card');
+  if (card) {
+    if (e.target.closest('.action-btn')) return; // tombol Pinjam/Favorit tetap seperti semula
+    openBookDetail(card);
+    return;
+  }
+
+  // 2. Dari .history-item (Riwayat)
+  const hist = e.target.closest('.history-item');
+  if (hist && !e.target.closest('button')) {
+    openBookDetail(hist);
+    return;
+  }
 });
-	
   // ==========================================
   // ROUTING SYSTEM
   // ==========================================
