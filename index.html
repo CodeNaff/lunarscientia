@@ -11,202 +11,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <style>
-
-/* --- STYLING MODAL DETAIL BUKU --- */
-.book-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(3, 5, 11, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-.book-modal-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.book-modal-content {
-  background: var(--bg-panel);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  width: 90%;
-  max-width: 850px;
-  max-height: 85vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.15);
-  transform: scale(0.95);
-  transition: transform 0.3s ease;
-}
-
-.book-modal-overlay.open .book-modal-content {
-  transform: scale(1);
-}
-
-.book-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: none;
-  color: var(--text-muted);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.book-modal-close:hover {
-  background: #ef4444;
-  color: #fff;
-}
-
-.book-modal-body {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 30px;
-  padding: 35px;
-}
-
-.book-modal-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.book-modal-left img {
-  width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-  object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.book-modal-right h2 {
-  font-size: 1.8rem;
-  color: #fff;
-  margin-bottom: 5px;
-  font-weight: 700;
-}
-
-.modal-author {
-  color: var(--primary-light);
-  font-size: 1rem;
-  margin-bottom: 15px;
-}
-
-.modal-badge-container {
-  margin-bottom: 20px;
-}
-
-.modal-badge {
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--primary-light);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: 1px solid rgba(139, 92, 246, 0.3);
-}
-
-.metadata-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  margin-bottom: 20px;
-}
-
-.metadata-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.meta-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.meta-value {
-  font-size: 0.95rem;
-  color: #e2e8f0;
-  font-weight: 500;
-}
-
-.modal-synopsis h3 {
-  font-size: 1.1rem;
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.modal-synopsis p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  text-align: justify;
-}
-
-.modal-actions {
-  margin-top: 25px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 20px;
-}
-
-.btn-borrow-modal {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.btn-borrow-modal:hover {
-  background: #7c3aed;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
-}
-
-/* Responsivitas Layar HP */
-@media (max-width: 768px) {
-  .book-modal-body {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
-  .book-modal-left {
-    max-width: 180px;
-    margin: 0 auto;
-  }
-  .metadata-grid {
-    grid-template-columns: 1fr;
-  }
-}	  
     :root {
       --bg-dark: #050816;
       --bg-panel: rgba(7, 11, 31, 0.95);
@@ -819,8 +623,52 @@
     .custom-option { padding: 10px 18px; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: var(--transition); }
     .custom-option:hover { background: rgba(139,92,246,0.15); color: #fff; padding-left: 24px; }
     .custom-option.selected { background: rgba(139,92,246,0.1); color: var(--primary-light); font-weight: 600; border-left: 3px solid var(--primary-light); }
+  
+  /* ========================================
+   MODAL DETAIL BUKU
+======================================== */
+.book-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(3, 5, 11, 0.85); backdrop-filter: blur(8px);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: var(--transition);
+}
+.book-modal-overlay.open { opacity: 1; pointer-events: auto; }
+.book-modal-content {
+  background: var(--bg-panel); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); width: 90%; max-width: 850px;
+  max-height: 85vh; overflow-y: auto; position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(139,92,246,0.15);
+  transform: scale(0.95); transition: transform 0.3s ease;
+}
+.book-modal-overlay.open .book-modal-content { transform: scale(1); }
+.book-modal-close {
+  position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05);
+  border: none; color: var(--text-muted); width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+}
+.book-modal-close:hover { background: var(--danger); color: #fff; }
+.book-modal-body { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 35px; }
+.book-modal-left img { width: 100%; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); object-fit: cover; }
+.book-modal-right h2 { font-size: 28px; color: #fff; margin-bottom: 5px; font-weight: 700; }
+.modal-author { color: var(--primary-light); font-size: 16px; margin-bottom: 15px; }
+.modal-badge { background: rgba(139,92,246,0.15); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--border-color-light); display: inline-block; margin-bottom: 20px; }
+.metadata-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px; }
+.metadata-item { display: flex; flex-direction: column; gap: 4px; }
+.meta-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.meta-value { font-size: 15px; color: #e2e8f0; font-weight: 500; }
+.modal-synopsis h3 { font-size: 18px; color: #fff; margin-bottom: 8px; }
+.modal-synopsis p { font-size: 14px; color: var(--text-muted); line-height: 1.6; text-align: justify; }
+.modal-actions { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+.btn-borrow-modal { background: var(--primary); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); }
+.btn-borrow-modal:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139,92,246,0.4); }
 
-	  
+@media (max-width: 768px) {
+  .book-modal-body { grid-template-columns: 1fr; padding: 20px; }
+  .book-modal-left { max-width: 180px; margin: 0 auto; }
+  .metadata-grid { grid-template-columns: 1fr; }
+}
+  
   </style>
 </head>
 
@@ -1013,28 +861,19 @@
           <a class="section-link" onclick="switchPage('koleksi')">Lihat Semua <i class="fa-solid fa-arrow-right-long" style="margin-left:5px"></i></a>
         </div>
         <div class="books-scroll-container">
-          <article class="book-card"
-         data-isbn="978-0345331359"
-         data-penerbit="Random House"
-         data-tahun="1980"
-         data-ddc="520 / Ast"
-         data-bahasa="English"
-         data-fisik="365 hlm; 24 cm"
-         data-sinopsis="Buku ini mengeksplorasi 15 miliar tahun evolusi kosmik dan perkembangan sains serta peradaban manusia. Sagan menelusuri asal-usul pengetahuan dari perpustakaan kuno Alexandria hingga misi luar angkasa modern.">
-         
-  <div class="book-cover-wrapper">
-    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" alt="Cosmos">
-    <div class="book-action-overlay">
-      <button class="action-btn" title="Baca"><i class="fa-solid fa-book-open"></i></button>
-      <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
-    </div>
-  </div>
-  <div class="book-info">
-    <div class="book-meta"><span class="book-tag">Sains</span><div class="book-rating"></div></div>
-    <h3>Cosmos: A Personal Voyage</h3>
-    <p>Carl Sagan</p>
-  </div>
-</article>
+          <article class="book-card">
+            <div class="book-cover-wrapper">
+              <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop" alt="Cosmos">
+              <div class="book-action-overlay">
+                <button class="action-btn" title="Baca"><i class="fa-solid fa-book-open"></i></button>
+                <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
+              </div>
+            </div>
+            <div class="book-info">
+              <div class="book-meta"><span class="book-tag">Sains</span><div class="book-rating"></div></div>
+              <h3>Cosmos: A Personal Voyage</h3><p>Carl Sagan</p>
+            </div>
+          </article>
           <article class="book-card">
             <div class="book-cover-wrapper">
               <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop" alt="Buku">
@@ -1048,19 +887,28 @@
               <h3>A Brief History of Time</h3><p>Stephen Hawking</p>
             </div>
           </article>
-          <article class="book-card">
-            <div class="book-cover-wrapper">
-              <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=600&auto=format&fit=crop" alt="Buku">
-              <div class="book-action-overlay">
-                <button class="action-btn"><i class="fa-solid fa-book-open"></i></button>
-                <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
-              </div>
-            </div>
-            <div class="book-info">
-              <div class="book-meta"><span class="book-tag">Sejarah</span><div class="book-rating"></div></div>
-              <h3>Sapiens: A Brief History</h3><p>Yuval Noah Harari</p>
-            </div>
-          </article>
+          <article class="book-card" style="cursor: pointer;"
+         data-isbn="978-602-424-694-5"
+         data-penerbit="Harper"
+         data-tahun="2015"
+         data-ddc="909.09 / Har"
+         data-bahasa="English / Terjemahan"
+         data-fisik="528 hlm; 23 cm"
+         data-sinopsis="Seratus ribu tahun yang lalu, setidaknya ada enam spesies manusia di Bumi. Hari ini hanya tersisa satu: kita, Homo sapiens. Bagaimana spesies kita berhasil mendominasi planet ini? Sapiens mengeksplorasi sejarah umat manusia dari Zaman Batu hingga Abad ke-21.">
+         
+  <div class="book-cover-wrapper">
+    <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=600&auto=format&fit=crop" alt="Buku">
+    <div class="book-action-overlay">
+      <button class="action-btn"><i class="fa-solid fa-book-open"></i></button>
+      <button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button>
+    </div>
+  </div>
+  <div class="book-info">
+    <div class="book-meta"><span class="book-tag">Sejarah</span><div class="book-rating"></div></div>
+    <h3>Sapiens: A Brief History</h3>
+    <p>Yuval Noah Harari</p>
+  </div>
+</article>
           <article class="book-card">
             <div class="book-cover-wrapper">
               <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=600&auto=format&fit=crop" alt="Buku">
@@ -1093,7 +941,7 @@
           <ul style="list-style: none; padding: 0; color: #a0aec0; line-height: 1.8;">
             <li><strong style="color: #fff;">Nama:</strong> Lunarscientia Digital Library</li>
             <li><strong style="color: #fff;">URL:</strong> <a href="#" style="color: var(--primary-light); text-decoration: none;">https://lunarscientia.vercel.app/</a></li>
-            <li><strong style="color: #fff;">Status:</strong> <span style="background: rgba(255, 0, 0, 0); color: #FF0000; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 5px;">ONLINE</span></li>
+            <li><strong style="color: #fff;">Status:</strong> <span style="background: rgba(46, 213, 115, 0.2); color: #2ed573; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 5px;">ONLINE</span></li>
           </ul>
           <p style="margin-top: 15px; color: #a0aec0; line-height: 1.6; font-size: 0.95rem;">
             Lunarscientia beroperasi sepenuhnya secara <strong>online</strong> tanpa wujud bangunan fisik, mendigitalkan akses literatur agar pengguna dapat membaca di mana saja dan kapan saja.
@@ -1329,9 +1177,9 @@
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/foreignfiction/43461bb4788c11ae8ec54baf7f476a3778b5d0969fe7c6bb37ff76c6dab9d4b7.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Bumi Manusia</h3><p>Pramoedya Ananta Toer</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia komik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/d731e86fab12a2ff8a165c3f68621d14d57fd2a8703327d6a8aafb83ba6bb114.png" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Komik</span><span class="book-tag">Komedi</span></div><h3>SI Juki: Komik Strip</h3><p>Faza Meonk</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/foreignfiction/772664ba99f00e57461d0dc2083f4ae320f724f33c4c039a0877b31b7e259766.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Laut Bercerita</h3><p>Leila S. Chudori</p></div></article>
-		<article class="book-card" data-category="bahasa_indonesia akademik" data-book="filosofi-teras"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/c21e9e7bfc74408ae1587208478a6e89899eec4ab8bb537dd7bf5accfeafa46c.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Filsafat</span></div><h3>Tan Malaka - MADILOG</h3><p>Rowland Books Collections</p></div></article>
+		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/c21e9e7bfc74408ae1587208478a6e89899eec4ab8bb537dd7bf5accfeafa46c.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Filsafat</span></div><h3>Tan Malaka - MADILOG</h3><p>Rowland Books Collections</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/6ae2d5e4c68ab361ed9889ee1c964cca3f8c22893fca2709f004a0ff653836af.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Gadis Kretek</h3><p>Ratih Kumala</p></div></article>
-		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn buka-detail-buku"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Self-Help</span></div><h3>Filosofi Teras</h3><p>Henry Manampiring</p></div></article>
+		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Self-Help</span></div><h3>Filosofi Teras</h3><p>Henry Manampiring</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/genesis/4ad388d05f4faf9ced1ef341d91b3ecb7e13d1ef2338fe67e23c0575c3076d65.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Puisi</span><span class="book-tag">Romansa</span></div><h3>Hujan Bulan Juni: Pilihan Sajak</h3><p>Sapardi Djoko Damono</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/69a1125f3f2fe01f31e71173068899666b7f9c41e210c10ee4e5c5d87338922d.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Romansa</span></div><h3>Jakarta Sebelum Pagi</h3><p>Ziggy Zezsyazeoviennazabrizkie</p></div></article>	</div>
 	</div>
@@ -1832,30 +1680,93 @@
   </div>
 </footer>
 
+<div id="bookDetailModal" class="book-modal-overlay">
+  <div class="book-modal-content">
+    <button class="book-modal-close" onclick="closeBookModal()"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div class="book-modal-body">
+      <div class="book-modal-left">
+        <img id="modalBookCover" src="" alt="Sampul Buku">
+      </div>
+      
+      <div class="book-modal-right">
+        <h2 id="modalBookTitle">Judul Buku</h2>
+        <p id="modalBookAuthor" class="modal-author">Oleh Penulis</p>
+        
+        <div class="modal-badge-container">
+          <span id="modalBookCategory" class="modal-badge">Kategori</span>
+        </div>
+
+        <div class="metadata-grid">
+          <div class="metadata-item">
+            <span class="meta-label">ISBN / ISSN</span>
+            <span id="modalBookISBN" class="meta-value">-</span>
+          </div>
+          <div class="metadata-item">
+            <span class="meta-label">Penerbit</span>
+            <span id="modalBookPublisher" class="meta-value">-</span>
+          </div>
+          <div class="metadata-item">
+            <span class="meta-label">Tahun Terbit</span>
+            <span id="modalBookYear" class="meta-value">-</span>
+          </div>
+          <div class="metadata-item">
+            <span class="meta-label">Klasifikasi DDC</span>
+            <span id="modalBookDDC" class="meta-value">-</span>
+          </div>
+          <div class="metadata-item">
+            <span class="meta-label">Bahasa</span>
+            <span id="modalBookLang" class="meta-value">-</span>
+          </div>
+          <div class="metadata-item">
+            <span class="meta-label">Deskripsi Fisik</span>
+            <span id="modalBookPhysical" class="meta-value">-</span>
+          </div>
+        </div>
+
+        <div class="modal-synopsis">
+          <h3>Sinopsis / Abstrak</h3>
+          <p id="modalBookSynopsis">Keterangan sinopsis akan tampil di sini.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modalActionBorrow" class="btn-borrow-modal"><i class="fa-solid fa-book-open"></i> Mulai Membaca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+	
 <script>
 
-// --- LOGIKA MODAL DETAIL BUKU (OPAC METADATA) ---
+// ==========================================
+// LOGIKA MODAL DETAIL BUKU (OPAC METADATA)
+// ==========================================
 
-// Fungsi membuka modal dan mengambil data
 function openBookModal(cardElement) {
   const modal = document.getElementById('bookDetailModal');
   
-  // Mengambil data teks dasar dari card
-  const title = cardElement.querySelector('.book-title').innerText;
-  const author = cardElement.querySelector('.book-author').innerText;
-  const coverSrc = cardElement.querySelector('img').getAttribute('src');
+  // Ambil Teks dari Card HTML Anda yang sebenarnya
+  const title = cardElement.querySelector('.book-info h3') ? cardElement.querySelector('.book-info h3').innerText : 'Tanpa Judul';
+  const author = cardElement.querySelector('.book-info p') ? cardElement.querySelector('.book-info p').innerText : 'Tanpa Penulis';
+  const coverSrc = cardElement.querySelector('img') ? cardElement.querySelector('img').getAttribute('src') : '';
+  const categoryElement = cardElement.querySelector('.book-tag');
+  const category = categoryElement ? categoryElement.innerText : 'Umum';
   
-  // Mengambil data teks dasar dari card (Disesuaikan dengan HTML Anda)
-const title = cardElement.querySelector('.book-info h3').innerText;
-const author = cardElement.querySelector('.book-info p').innerText;
-const coverSrc = cardElement.querySelector('img').getAttribute('src');
+  // Ambil Metadata dari atribut data-* yang baru kita buat
+  const isbn = cardElement.getAttribute('data-isbn') || 'Tidak Ada ISBN';
+  const publisher = cardElement.getAttribute('data-penerbit') || '-';
+  const year = cardElement.getAttribute('data-tahun') || '-';
+  const ddc = cardElement.getAttribute('data-ddc') || '-';
+  const lang = cardElement.getAttribute('data-bahasa') || '-';
+  const physical = cardElement.getAttribute('data-fisik') || '-';
+  const synopsis = cardElement.getAttribute('data-sinopsis') || 'Sinopsis tidak tersedia untuk judul ini.';
 
-  // Injeksi data ke komponen di dalam Modal
+  // Suntikkan data tersebut ke dalam Modal
   document.getElementById('modalBookTitle').innerText = title;
   document.getElementById('modalBookAuthor').innerText = 'Oleh: ' + author;
   document.getElementById('modalBookCover').setAttribute('src', coverSrc);
   document.getElementById('modalBookCategory').innerText = category;
-  
   document.getElementById('modalBookISBN').innerText = isbn;
   document.getElementById('modalBookPublisher').innerText = publisher;
   document.getElementById('modalBookYear').innerText = year;
@@ -1864,56 +1775,41 @@ const coverSrc = cardElement.querySelector('img').getAttribute('src');
   document.getElementById('modalBookPhysical').innerText = physical;
   document.getElementById('modalBookSynopsis').innerText = synopsis;
 
-  // Sambungkan tombol pinjam di dalam modal dengan fungsi peminjaman bawaan Anda
-  const borrowBtnModal = document.getElementById('modalActionBorrow');
-  borrowBtnModal.onclick = function() {
-    // Meniru trigger klik pada tombol .btn-baca asli di dalam card
-    const originalBorrowBtn = cardElement.querySelector('.btn-baca');
-    if (originalBorrowBtn) {
-      originalBorrowBtn.click();
-    }
+  // Sambungkan tombol baca di dalam modal agar memicu aksi yang sama
+  document.getElementById('modalActionBorrow').onclick = function() {
+    const actionBtn = cardElement.querySelector('.action-btn:not(.secondary)');
+    if (actionBtn) actionBtn.click();
     closeBookModal();
   };
 
-  // Tampilkan Modal
+  // Buka Modalnya
   modal.classList.add('open');
 }
 
-// Fungsi menutup modal
 function closeBookModal() {
-  const modal = document.getElementById('bookDetailModal');
-  modal.classList.remove('open');
+  document.getElementById('bookDetailModal').classList.remove('open');
 }
 
-// Daftarkan Event Listener Klik pada setiap .book-card setelah DOM siap
+// Pantau setiap klik di seluruh halaman
 document.addEventListener("DOMContentLoaded", function() {
-  const collectionSection = document.getElementById('page-koleksi') || document.body;
-  
-  collectionSection.addEventListener('click', function(e) {
-    // Cari elemen terdekat yang memiliki class .book-card
+  document.body.addEventListener('click', function(e) {
+    // Cek apakah yang diklik adalah kartu buku
     const card = e.target.closest('.book-card');
     
     if (card) {
-      // Jika yang di-klik adalah tombol pinjam/baca bawaan, jangan buka modal detail
-      if (e.target.classList.contains('btn-baca') || e.target.closest('.btn-baca')) {
+      // PENTING: Jangan buka modal kalau user mengklik tombol baca atau tombol favorit (hati)
+      if (e.target.closest('.action-btn')) {
         return; 
       }
-      // Jika menekan tombol ikon favorit/hati bawaan, jangan buka modal juga
-      if (e.target.closest('.book-actions') || e.target.closest('.fav-btn')) {
-        return;
-      }
-      
-      // Jalankan fungsi modal jika area card selain tombol yang diklik
+      // Jika yang diklik area lain dari kartu, buka modalnya
       openBookModal(card);
     }
   });
 
-  // Menutup modal jika pengguna mengklik area luar kotak modal (overlay)
+  // Tutup modal jika user klik area gelap di luarnya
   const modalOverlay = document.getElementById('bookDetailModal');
   modalOverlay.addEventListener('click', function(e) {
-    if (e.target === modalOverlay) {
-      closeBookModal();
-    }
+    if (e.target === modalOverlay) closeBookModal();
   });
 });
 	
@@ -2695,92 +2591,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   })();
-
-const modal = document.getElementById('bookDetailModal');
-const closeModal = document.getElementById('closeBookModal');
-
-document.querySelectorAll('.buka-detail-buku').forEach(btn => {
-  btn.addEventListener('click', function(e){
-
-    e.stopPropagation();
-
-    const card = this.closest('.book-card');
-    const judul =
-      card.querySelector('h3')?.innerText.trim();
-
-    if(judul === 'Filosofi Teras'){
-      modal.classList.add('active');
-    }
-  });
-});
-
-closeModal.addEventListener('click', () => {
-  modal.classList.remove('active');
-});
-
-document
-.querySelector('.book-detail-backdrop')
-.addEventListener('click', () => {
-  modal.classList.remove('active');
-});
-	
 </script>
-
-<div id="bookDetailModal" class="book-modal-overlay">
-  <div class="book-modal-content">
-    <button class="book-modal-close" onclick="closeBookModal()"><i class="fa-solid fa-xmark"></i></button>
-    
-    <div class="book-modal-body">
-      <div class="book-modal-left">
-        <img id="modalBookCover" src="" alt="Sampul Buku">
-      </div>
-      
-      <div class="book-modal-right">
-        <h2 id="modalBookTitle">Judul Buku</h2>
-        <p id="modalBookAuthor" class="modal-author">Oleh Penulis</p>
-        
-        <div class="modal-badge-container">
-          <span id="modalBookCategory" class="modal-badge">Kategori</span>
-        </div>
-
-        <div class="metadata-grid">
-          <div class="metadata-item">
-            <span class="meta-label">ISBN / ISSN</span>
-            <span id="modalBookISBN" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Penerbit</span>
-            <span id="modalBookPublisher" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Tahun Terbit</span>
-            <span id="modalBookYear" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Klasifikasi DDC</span>
-            <span id="modalBookDDC" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Bahasa</span>
-            <span id="modalBookLang" class="meta-value">-</span>
-          </div>
-          <div class="metadata-item">
-            <span class="meta-label">Deskripsi Fisik</span>
-            <span id="modalBookPhysical" class="meta-value">-</span>
-          </div>
-        </div>
-
-        <div class="modal-synopsis">
-          <h3>Sinopsis / Abstrak</h3>
-          <p id="modalBookSynopsis">Keterangan sinopsis atau ringkasan buku akan tampil di sini secara dinamis sesuai dengan buku yang dipilih oleh pemustaka.</p>
-        </div>
-
-        <div class="modal-actions">
-          <button id="modalActionBorrow" class="btn-borrow-modal"><i class="fa-solid fa-bookmark"></i> Pinjam Buku</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </body>
 </html>
