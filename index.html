@@ -645,6 +645,7 @@
       <a class="nav-item" data-target="riwayat"><i class="fa-solid fa-clock-rotate-left"></i><span>Riwayat</span></a>
       <a class="nav-item" data-target="raksaya"><i class="fa-solid fa-book-bookmark"></i><span>Rak Saya</span></a>
       <div class="nav-divider"></div>
+		<a class="nav-item" data-target="agenda"><i class="fa-solid fa-calendar-days"></i><span>Agenda</span></a>
       <a class="nav-item" data-target="layanan"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Layanan</span></a>
       <a class="nav-item" data-target="news"><i class="fa-solid fa-newspaper"></i><span>News</span></a>
       <a class="nav-item" data-target="kontak"><i class="fa-solid fa-location-dot"></i><span>Kontak</span></a>
@@ -796,7 +797,7 @@
           </div>
         </div>
       </section>
-
+		
       <!-- Sedang Populer -->
       <section>
         <div class="section-header">
@@ -874,7 +875,7 @@
           <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-building-columns" style="color: var(--primary); margin-right: 10px;"></i>Identitas Perpustakaan</h3>
           <ul style="list-style: none; padding: 0; color: #a0aec0; line-height: 1.8;">
             <li><strong style="color: #fff;">Nama:</strong> Lunarscientia Digital Library</li>
-            <li><strong style="color: #fff;">URL:</strong> <a href="#" style="color: var(--primary-light); text-decoration: none;">www.lunarscientia.ac.id</a></li>
+            <li><strong style="color: #fff;">URL:</strong> <a href="#" style="color: var(--primary-light); text-decoration: none;">https://lunarscientia.vercel.app/</a></li>
             <li><strong style="color: #fff;">Status:</strong> <span style="background: rgba(46, 213, 115, 0.2); color: #2ed573; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 5px;">ONLINE</span></li>
           </ul>
           <p style="margin-top: 15px; color: #a0aec0; line-height: 1.6; font-size: 0.95rem;">
@@ -1252,7 +1253,36 @@
     </div>
 
     <!-- ================================================================
-         HALAMAN 8: LAYANAN
+         HALAMAN 8: Agenda
+    ================================================================ -->
+	  
+	  <div id="section-agenda" class="content-section">
+      <div class="page-header">
+        <h1 class="page-title"><i class="fa-solid fa-calendar-days" style="color:var(--primary)"></i> Agenda Kegiatan</h1>
+        <p class="page-desc">Jadwal kegiatan literasi dan pengembangan diri di Lunarscientia.</p>
+      </div>
+
+      <div class="agenda-container">
+        <div class="agenda-item" style="background:var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Webinar Literasi Digital 2026</h3>
+            <span class="badge" style="background:var(--primary); padding: 5px 10px; border-radius: 4px; font-size: 12px;">15 Juni 2026</span>
+          </div>
+          <p style="margin-top: 10px; font-size: 14px; color: #ccc;">Diskusi mengenai pemanfaatan database perpustakaan untuk riset mahasiswa secara daring.</p>
+        </div>
+
+        <div class="agenda-item" style="background:var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Workshop Menulis Kreatif</h3>
+            <span class="badge" style="background:var(--primary); padding: 5px 10px; border-radius: 4px; font-size: 12px;">20 Juni 2026</span>
+          </div>
+          <p style="margin-top: 10px; font-size: 14px; color: #ccc;">Pelatihan teknik menulis artikel ilmiah dan resensi novel bagi anggota perpustakaan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         HALAMAN 9: LAYANAN
     ================================================================ -->
     <div id="section-layanan" class="content-section">
       <div class="page-header">
@@ -1316,68 +1346,58 @@
     ================================================================ -->
     <div id="section-news" class="content-section">
       <div class="page-header">
-        <h1 class="page-title"><i class="fa-solid fa-newspaper" style="color:var(--primary)"></i> News & Pengumuman</h1>
-        <p class="page-desc">Berita terbaru, update koleksi, dan pengumuman resmi dari Lunarscientia Library.</p>
+        <h1 class="page-title"><i class="fa-solid fa-newspaper" style="color:var(--primary)"></i> Agenda & Berita</h1>
+        <p class="page-desc">Pantau kegiatan literasi terbaru dan lihat kembali momen kesuksesan acara kami.</p>
       </div>
 
-      <div class="announcement-strip">
-        <div class="announcement-icon">📢</div>
-        <div class="announcement-content">
-          <h3>Weekend Reading Festival — Segera Hadir!</h3>
-          <p>Bergabunglah bersama kami Sabtu ini untuk hari penuh kisah, permainan, dan aktivitas kreatif. Terbuka untuk semua anggota dan keluarga. Gratis!</p>
-        </div>
-      </div>
-
-      <section>
-        <div class="section-header">
-          <h2 class="section-title" style="font-size:20px"><i class="fa-solid fa-bolt" style="color:var(--warning)"></i> Kecocokan Tinggi untuk Anda</h2>
-        </div>
-        <div class="books-scroll-container">
-          <article class="book-card"><div class="book-cover-wrapper"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop" alt="Cover"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button></div></div><div class="book-info"><div class="match-score"><i class="fa-solid fa-bolt"></i> 98% Match</div><h3>Pale Blue Dot</h3><p>Carl Sagan</p></div></article>
-          <article class="book-card"><div class="book-cover-wrapper"><img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=600&auto=format&fit=crop" alt="Cover"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button></div></div><div class="book-info"><div class="match-score"><i class="fa-solid fa-bolt"></i> 94% Match</div><h3>Astrophysics in a Hurry</h3><p>Neil deGrasse Tyson</p></div></article>
-          <article class="book-card"><div class="book-cover-wrapper"><img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=600&auto=format&fit=crop" alt="Cover"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button></div></div><div class="book-info"><div class="match-score" style="color:#f59e0b;background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3)"><i class="fa-solid fa-star"></i> 89% Match</div><h3>The Elegant Universe</h3><p>Brian Greene</p></div></article>
+      <section style="margin-bottom: 50px;">
+        <h2 style="font-size:22px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-calendar-days" style="color:var(--warning)"></i> Agenda Mendatang
+        </h2>
+        <div class="news-grid">
+          <div class="news-card">
+            <div class="news-image"><i class="fa-solid fa-users-viewfinder" style="font-size:60px"></i></div>
+            <div class="news-content">
+              <div class="news-badge" style="background:rgba(245,158,11,0.2);color:#f59e0b">Segera Hadir</div>
+              <h3>Webinar: Strategi Literasi Digital 2026</h3>
+              <p>Bergabunglah bersama kami dalam diskusi virtual mengenai masa depan perpustakaan digital dan tantangan literasi di era teknologi maju.</p>
+              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 15 Juni 2026</span></div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="news-image"><i class="fa-solid fa-pen-nib" style="font-size:60px"></i></div>
+            <div class="news-content">
+              <div class="news-badge" style="background:rgba(245,158,11,0.2);color:#f59e0b">Pendaftaran Dibuka</div>
+              <h3>Workshop Menulis Kreatif</h3>
+              <p>Asah kemampuan menulismu bersama para praktisi literasi. Terbatas untuk 50 anggota aktif perpustakaan Lunarscientia!</p>
+              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 20 Juni 2026</span></div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section>
-        <div class="section-header">
-          <h2 class="section-title" style="font-size:20px"><i class="fa-solid fa-newspaper" style="color:var(--primary-light)"></i> Berita Terkini</h2>
-        </div>
+        <h2 style="font-size:22px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-check-double" style="color:var(--success)"></i> Berita & Pengumuman
+        </h2>
         <div class="news-grid">
           <div class="news-card">
-            <div class="news-image" style="background:linear-gradient(135deg,rgba(139,92,246,0.4),rgba(79,70,229,0.3))">
-              <span style="font-size:60px">🎪</span>
-              <div class="news-image-overlay"></div>
-            </div>
+            <div class="news-image"><i class="fa-solid fa-robot" style="font-size:60px"></i></div>
             <div class="news-content">
-              <div class="news-badge"><i class="fa-solid fa-star"></i> Event Unggulan</div>
-              <h3>Festival Literasi Galaksi Sukses Digelar!</h3>
-              <p>Ratusan anggota menghadiri festival literasi grand kami yang dipenuhi permainan interaktif, tantangan membaca, pertunjukan wayang, dan aktivitas literasi seru.</p>
-              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 10 Mei 2026</span><span><i class="fa-solid fa-users"></i> 500+ Peserta</span></div>
+              <div class="news-badge" style="background:rgba(16,185,129,0.2);color:#10b981">Berita Terbaru</div>
+              <h3>Penerapan AI untuk Pencarian Buku Cerdas</h3>
+              <p>Perpustakaan digital kini mulai menerapkan teknologi kecerdasan buatan (AI) untuk memberikan rekomendasi bacaan yang lebih akurat sesuai minat pembaca secara personal.</p>
+              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 20 Mei 2026</span></div>
             </div>
           </div>
+
           <div class="news-card">
-            <div class="news-image" style="background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2))">
-              <span style="font-size:60px">📦</span>
-              <div class="news-image-overlay"></div>
-            </div>
+            <div class="news-image"><i class="fa-solid fa-globe" style="font-size:60px"></i></div>
             <div class="news-content">
-              <div class="news-badge" style="background:rgba(16,185,129,0.2);color:#10b981"><i class="fa-solid fa-arrow-up"></i> Update Koleksi</div>
-              <h3>Koleksi Buku Terbaru Telah Tiba!</h3>
-              <p>Lunarscientia telah menambahkan batch baru berisi buku ilmu pengetahuan, novel terjemahan, komik edukatif, dan buku digital interaktif untuk seluruh anggota.</p>
-              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 8 Mei 2026</span></div>
-            </div>
-          </div>
-          <div class="news-card">
-            <div class="news-image" style="background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(217,119,6,0.2))">
-              <span style="font-size:60px">💻</span>
-              <div class="news-image-overlay"></div>
-            </div>
-            <div class="news-content">
-              <div class="news-badge" style="background:rgba(245,158,11,0.2);color:#f59e0b"><i class="fa-solid fa-megaphone"></i> Pengumuman</div>
-              <h3>Layanan Baca Digital Kini Diperluas</h3>
-              <p>Anggota kini dapat mengakses lebih banyak e-book, audio stories, dan konten digital interaktif melalui sistem perpustakaan yang telah diperbarui.</p>
-              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 3 Mei 2026</span></div>
+              <div class="news-badge" style="background:rgba(16,185,129,0.2);color:#10b981">Berita Terbaru</div>
+              <h3>Peningkatan Akses Literasi Digital Nasional</h3>
+              <p>Data terbaru menunjukkan kenaikan signifikan dalam akses peminjaman buku elektronik nasional, membuktikan bahwa minat baca generasi muda kian beralih ke platform digital.</p>
+              <div class="news-meta"><span><i class="fa-regular fa-calendar"></i> 15 Mei 2026</span></div>
             </div>
           </div>
         </div>
