@@ -11,6 +11,88 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <style>
+
+.book-detail-modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.book-detail-modal.active{
+  display:flex;
+}
+
+.book-detail-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);
+}
+
+.book-detail-content{
+  position:relative;
+  width:min(1100px,92%);
+  max-height:90vh;
+  overflow:auto;
+  background:#0c1228;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;
+  padding:40px;
+  z-index:2;
+}
+
+.book-detail-grid{
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:40px;
+}
+
+.book-left img{
+  width:100%;
+  border-radius:20px;
+}
+
+.book-author{
+  color:var(--primary-light);
+  margin-bottom:20px;
+}
+
+.book-desc{
+  color:var(--text-muted);
+  line-height:1.9;
+  margin-bottom:32px;
+}
+
+.metadata-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+
+.metadata-grid span{
+  color:#9ca3af;
+  font-size:13px;
+}
+
+.metadata-grid p{
+  margin-top:8px;
+  font-weight:600;
+}
+
+.close-book-modal{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+}
+	  
     :root {
       --bg-dark: #050816;
       --bg-panel: rgba(7, 11, 31, 0.95);
@@ -1124,9 +1206,9 @@
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/foreignfiction/43461bb4788c11ae8ec54baf7f476a3778b5d0969fe7c6bb37ff76c6dab9d4b7.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Bumi Manusia</h3><p>Pramoedya Ananta Toer</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia komik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/d731e86fab12a2ff8a165c3f68621d14d57fd2a8703327d6a8aafb83ba6bb114.png" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Komik</span><span class="book-tag">Komedi</span></div><h3>SI Juki: Komik Strip</h3><p>Faza Meonk</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/foreignfiction/772664ba99f00e57461d0dc2083f4ae320f724f33c4c039a0877b31b7e259766.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Laut Bercerita</h3><p>Leila S. Chudori</p></div></article>
-		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/c21e9e7bfc74408ae1587208478a6e89899eec4ab8bb537dd7bf5accfeafa46c.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Filsafat</span></div><h3>Tan Malaka - MADILOG</h3><p>Rowland Books Collections</p></div></article>
+		<article class="book-card" data-category="bahasa_indonesia akademik" data-book="filosofi-teras"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/c21e9e7bfc74408ae1587208478a6e89899eec4ab8bb537dd7bf5accfeafa46c.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Filsafat</span></div><h3>Tan Malaka - MADILOG</h3><p>Rowland Books Collections</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/6ae2d5e4c68ab361ed9889ee1c964cca3f8c22893fca2709f004a0ff653836af.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Sejarah</span></div><h3>Gadis Kretek</h3><p>Ratih Kumala</p></div></article>
-		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Self-Help</span></div><h3>Filosofi Teras</h3><p>Henry Manampiring</p></div></article>
+		<article class="book-card" data-category="bahasa_indonesia akademik"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn buka-detail-buku"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Akademik</span><span class="book-tag">Self-Help</span></div><h3>Filosofi Teras</h3><p>Henry Manampiring</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/genesis/4ad388d05f4faf9ced1ef341d91b3ecb7e13d1ef2338fe67e23c0575c3076d65.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Puisi</span><span class="book-tag">Romansa</span></div><h3>Hujan Bulan Juni: Pilihan Sajak</h3><p>Sapardi Djoko Damono</p></div></article>
 		<article class="book-card" data-category="bahasa_indonesia novel"><div class="book-cover-wrapper"><img src="https://covers.1lib.sk/covers400/collections/userbooks/69a1125f3f2fe01f31e71173068899666b7f9c41e210c10ee4e5c5d87338922d.jpg" alt="Buku"><div class="book-action-overlay"><button class="action-btn"><i class="fa-solid fa-book-open"></i></button><button class="action-btn secondary" onclick="showToast('Ditambahkan ke favorit!')"><i class="fa-regular fa-heart"></i></button></div></div><div class="book-info"><div class="book-meta"><span class="book-tag">Indonesia</span><span class="book-tag">Novel</span><span class="book-tag">Romansa</span></div><h3>Jakarta Sebelum Pagi</h3><p>Ziggy Zezsyazeoviennazabrizkie</p></div></article>	</div>
 	</div>
@@ -2406,6 +2488,117 @@
       }
     });
   })();
+
+const modal = document.getElementById('bookDetailModal');
+const closeModal = document.getElementById('closeBookModal');
+
+document.querySelectorAll('.buka-detail-buku').forEach(btn => {
+  btn.addEventListener('click', function(e){
+
+    e.stopPropagation();
+
+    const card = this.closest('.book-card');
+    const judul =
+      card.querySelector('h3')?.innerText.trim();
+
+    if(judul === 'Filosofi Teras'){
+      modal.classList.add('active');
+    }
+  });
+});
+
+closeModal.addEventListener('click', () => {
+  modal.classList.remove('active');
+});
+
+document
+.querySelector('.book-detail-backdrop')
+.addEventListener('click', () => {
+  modal.classList.remove('active');
+});
+	
 </script>
+
+	  <div class="book-detail-modal" id="bookDetailModal">
+  <div class="book-detail-backdrop"></div>
+
+  <div class="book-detail-content">
+    <button class="close-book-modal" id="closeBookModal">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="book-detail-grid">
+
+      <div class="book-left">
+        <img
+          src="https://covers.1lib.sk/covers400/collections/userbooks/112597737ece89b760d02bcd4281f6ef5a31295957084ca385be9a1a368e3494.jpg"
+          alt="Filosofi Teras"
+        >
+      </div>
+
+      <div class="book-right">
+        <h2>Filosofi Teras</h2>
+        <p class="book-author">Henry Manampiring</p>
+
+        <p class="book-desc">
+          Buku ini pada awalnya menceritakan tentang sebuah survei
+          kekhawatiran nasional yang semakin masif sekaligus menyajikan
+          tentang sekilas kehidupan si penulis yang dipenuhi oleh emosi
+          negatif yang berlebihan. Lalu, lebih dari 2000 tahun lalu sebuah
+          mazhab filsafat menemukan akar masalah dan solusi dari banyaknya
+          emosi negatif. Ya, Stoisisme atau filosofi Stoa, namun penulis
+          memperkenalkannya sebagai “Filosofi Teras”.
+        </p>
+
+        <div class="metadata-grid">
+
+          <div>
+            <span>Categories</span>
+            <p>
+              Education Studies & Teaching –
+              Philosophy of Education
+            </p>
+          </div>
+
+          <div>
+            <span>Content Type</span>
+            <p>Books</p>
+          </div>
+
+          <div>
+            <span>Year</span>
+            <p>2019</p>
+          </div>
+
+          <div>
+            <span>Publisher</span>
+            <p>Penerbit Buku Kompas</p>
+          </div>
+
+          <div>
+            <span>Language</span>
+            <p>Indonesian</p>
+          </div>
+
+          <div>
+            <span>Pages</span>
+            <p>320</p>
+          </div>
+
+          <div>
+            <span>ISBN</span>
+            <p>9766024125189</p>
+          </div>
+
+          <div>
+            <span>File</span>
+            <p>PDF, 68.42 MB</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
